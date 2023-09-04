@@ -17,7 +17,11 @@
     "Dependency Injection",
     "Ksike"
   ],
-  "author": "",
+  "author": {
+    "name": "Antonio Membrides Espinosa",
+    "email": "tonykssa@gmail.com",
+    "url": "https://github.com/ameksike"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ameksike/kshook/issues"
