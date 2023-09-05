@@ -1,12 +1,23 @@
 const path = require('path');
 const KsDp = require('ksdp');
-
-const hook = new KsDp.integration.hook.Main({
-    path: path.join(__dirname, "src")
-});
+const store = { instance: null };
 
 module.exports = {
-    hook,
+    /**
+     * @description Get an instance of the Hook library
+     * @param {Boolean} force Forces creating a new instance, otherwise it behaves as a singleton by default
+     * @param {Object} options 
+     * @returns {Object} Hook
+     */
+    get: (force = false, options = null) => {
+        options = options || {
+            path: path.join(__dirname, "src")
+        };
+        if (force || !store.instance) {
+            store.instance = new KsDp.integration.hook.Main(options);
+        }
+        return instance;
+    },
     driver: {
         MsTeams: require('./src/driver/MsTeams'),
         Telegram: require('./src/driver/Telegram')

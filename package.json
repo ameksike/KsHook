@@ -1,6 +1,6 @@
 {
   "name": "kshook",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Ksike Hook library for easy implementation of Event Driven Design",
   "main": "index.js",
   "scripts": {
