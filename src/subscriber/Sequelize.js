@@ -1,4 +1,4 @@
-class Db {
+class Sequelize {
 
     subscribe(payload) {
         this.list[payload.owner] = this.list[payload.owner] || [];
@@ -10,4 +10,4 @@ class Db {
     }
 }
 
-module.exports = Db;
+module.exports = Sequelize;

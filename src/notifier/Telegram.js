@@ -9,17 +9,14 @@ class Telegram {
     }
 
     configure(cfg) {
-        this.cfg = Object.assign(
-            require('../../cfg/config.telegram.json'),
-            cfg || this.cfg
-        );
+        cfg && Object.assign(this.cfg, cfg);
         this.drv.configure(this.cfg);
         return this;
     }
 
     run(payload) {
-        const chatId = payload.recipient || payload.chat_id;
-        const message = payload?.data?.text || payload?.message;
+        const chatId = payload?.data?.recipient || payload?.data?.chatId;
+        const message = payload?.data?.message || payload?.message;
         return this.drv.send({
             message,
             chatId

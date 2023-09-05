@@ -8,19 +8,20 @@ class MsTeams {
     }
 
     configure(cfg) {
-        this.cfg = Object.assign(
-            require('../../cfg/config.telegram.json'),
-            cfg || this.cfg
-        );
+        cfg && Object.assign(this.cfg, cfg);
         this.drv.configure(this.cfg);
         return this;
     }
 
     run(payload) {
-        return {
-            from: "MyNotifier",
-            payload
-        };
+        return this.drv.send({
+            title: payload?.data?.title || "MSG",
+            subtitle: payload?.data?.subtitle,
+            text: payload?.data?.message,
+            facts: payload?.data?.facts || {}
+        }, {
+            format: payload?.data?.format || "MsgCard"
+        });
     }
 }
 

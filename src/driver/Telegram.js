@@ -5,7 +5,7 @@ class Telegram extends ksdp.integration.Dip {
 
     constructor(cfg) {
         super();
-        this.cfg = {};
+        this.cfg = require('../../cfg/config.telegram.json');
         this.configure(cfg);
     }
 
