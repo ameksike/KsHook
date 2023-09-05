@@ -1,0 +1,17 @@
+const KsHook = require('..');
+describe('Load KsHook Lib', () => {
+
+    beforeAll(async () => { });
+
+    afterAll(async () => { });
+
+    it("valid instance", (done) => {
+        expect(KsHook).toBeInstanceOf(Object);
+        expect(KsHook.driver.MsTeams).toBeInstanceOf(Function);
+        expect(KsHook.driver.Telegram).toBeInstanceOf(Function);
+        expect(KsHook.notifier.MsTeams).toBeInstanceOf(Function);
+        expect(KsHook.notifier.Telegram).toBeInstanceOf(Function);
+        expect(KsHook.subscriber.Sequelize).toBeInstanceOf(Function);
+        done();
+    });
+});

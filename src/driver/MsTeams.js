@@ -85,6 +85,4 @@ class MsTeams extends ksdp.integration.Dip {
     }
 }
 
-const obj = new MsTeams();
-obj.Cls = MsTeams;
-module.exports = obj;
+module.exports = MsTeams;

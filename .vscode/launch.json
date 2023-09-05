@@ -5,18 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Test",
             "type": "node",
             "request": "launch",
-            "name": "Launch",
-            "skipFiles": [
-                "<node_internals>/**"
+            "env": {
+                "CI": "true"
+            },
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/jest",
+            "args": [
+                "test",
+                "--runInBand",
+                "--no-cache"
             ],
-            "program": "${workspaceFolder}\\index.js"
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "CURRENT",
+            "name": "Current",
             "skipFiles": [
                 "<node_internals>/**"
             ],

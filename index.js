@@ -1,7 +1,7 @@
 const path = require('path');
 const KsDp = require('ksdp');
 
-const hook = KsDp.integration.hook.Main({
+const hook = new KsDp.integration.hook.Main({
     path: path.join(__dirname, "src")
 });
 
