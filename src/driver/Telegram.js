@@ -24,7 +24,7 @@ class Telegram extends ksdp.integration.Dip {
      */
     async send(payload) {
         try {
-            const { message, chatId, urlSend = this.cfg.urlSend } = payload;
+            const { message, chatId, urlSend = this.cfg.url_send } = payload;
             const url = urlSend.replace("{{BOT_TOKEN}}", this.cfg?.tokenBot || "");
             const bdy = {
                 chat_id: chatId,
@@ -54,7 +54,7 @@ class Telegram extends ksdp.integration.Dip {
      */
     async info(payload) {
         try {
-            const { urlInfo = this.cfg.urlInfo } = payload;
+            const { urlInfo = this.cfg.url_info } = payload || {};
             const url = urlInfo.replace("{{BOT_TOKEN}}", this.cfg?.tokenBot || "");
             this.logger?.info({
                 src: "KsHook:Driver:Telegram:info",
@@ -80,7 +80,7 @@ class Telegram extends ksdp.integration.Dip {
      */
     async updates(payload) {
         try {
-            const { urlUpdate = this.cfg.urlUpdate } = payload;
+            const { urlUpdate = this.cfg.url_update } = payload || {};
             const url = urlUpdate.replace("{{BOT_TOKEN}}", this.cfg?.tokenBot || "");
             this.logger?.info({
                 src: "KsHook:Driver:Telegram:updates",
