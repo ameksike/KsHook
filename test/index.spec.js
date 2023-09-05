@@ -8,6 +8,7 @@ describe('Load KsHook Lib', () => {
     it("valid instance", (done) => {
         expect(KsHook).toBeInstanceOf(Object);
         expect(KsHook.get).toBeInstanceOf(Function);
+        expect(KsHook.get()).toBeInstanceOf(Object);
         expect(KsHook.driver.MsTeams).toBeInstanceOf(Function);
         expect(KsHook.driver.Telegram).toBeInstanceOf(Function);
         expect(KsHook.notifier.MsTeams).toBeInstanceOf(Function);
