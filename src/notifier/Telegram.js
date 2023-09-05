@@ -1,10 +1,10 @@
-const kshook = require('../../');
+const TelegramDriver = require('../driver/Telegram');
 
 class Telegram {
 
     constructor(cfg) {
         this.cfg = {};
-        this.drv = new kshook.driver.Telegram();
+        this.drv = new TelegramDriver();
         this.configure(cfg);
     }
 
@@ -15,8 +15,8 @@ class Telegram {
     }
 
     run(payload) {
-        const chatId = payload?.data?.recipient || payload?.data?.chatId;
-        const message = payload?.data?.message || payload?.message;
+        const chatId = payload?.target?.value?.recipient || payload?.target?.value?.chatId || payload?.target?.value;
+        const message = payload?.data?.message;
         return this.drv.send({
             message,
             chatId

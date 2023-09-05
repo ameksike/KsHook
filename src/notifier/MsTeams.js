@@ -1,9 +1,8 @@
-const kshook = require('../../');
-
+const MsTeamsDriver = require('../driver/MsTeams');
 class MsTeams {
     constructor(cfg) {
         this.cfg = {};
-        this.drv = new kshook.driver.MsTeams();
+        this.drv = new MsTeamsDriver();
         this.configure(cfg);
     }
 
@@ -20,7 +19,8 @@ class MsTeams {
             text: payload?.data?.message,
             facts: payload?.data?.facts || {}
         }, {
-            format: payload?.data?.format || "MsgCard"
+            format: payload?.data?.format || "MsgCard",
+            url: payload?.target?.value?.url || payload?.target?.value
         });
     }
 }
