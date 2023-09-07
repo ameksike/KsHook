@@ -38,18 +38,25 @@ class Model {
         this.list[payload?.owner].push(payload);
     }
 
+    /**
+     * @description get the subscriptions list
+     * @param {Object} payload 
+     * @returns {Array} [{ group: String, owner: String, event: String, value: String|Object, notifier: String }]  
+     */
     async subscriptions(payload) {
         try {
             if (!this.models || !this.models[this.cfg?.model?.hook]) {
                 return [];
             }
             const model = this.models[this.cfg?.model?.hook];
-            const where = {
-                [this.cfg?.attr?.event]: payload.event,
-                [this.cfg?.attr?.status]: 1
-            };
-            payload?.owner && (where[this.cfg?.attr?.event] = payload.owner);
+            const where = {};
+            payload?.event && (where[this.cfg?.attr?.event] = payload.event);
+            payload?.owner && (where[this.cfg?.attr?.owner] = payload.owner);
             payload?.group && (where[this.cfg?.attr?.group] = payload.group);
+            payload?.status && (where[this.cfg?.attr?.status] = payload.status);
+            if (parseInt(payload.status) !== 0) {
+                where[this.cfg?.attr?.status] = 1;
+            }
             const res = await model.findAll({ where });
             return (res?.map && res.map(item => {
                 let row = {
