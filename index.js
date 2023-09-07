@@ -33,6 +33,6 @@ module.exports = {
         Telegram: require('./src/notifier/Telegram'),
     },
     subscriber: {
-        Sequelize: require('./src/subscriber/Sequelize'),
+        Model: require('./src/subscriber/Model'),
     }
 };
