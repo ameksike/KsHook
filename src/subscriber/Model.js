@@ -111,7 +111,7 @@ class Model {
         catch (error) {
             this.logger?.error({
                 flow: payload?.flow || String(Date.now()) + "00",
-                src: "KsHook:Subscriber:Model:unsubscribe",
+                src: "KsHook:Subscriber:Model:subscribe",
                 error: error?.message || error,
                 data: payload
             });
@@ -184,9 +184,36 @@ class Model {
         }
     }
 
+    /**
+     * @description get the event list
+     * @param {Object} payload 
+     * @returns {Arrar} [{ name: String, description: String }]
+     */
     async events(payload) {
-        if (!this.models || !this.models[this.cfg?.model?.event]) {
-            return [];
+        try {
+            const model = this.#getModel();
+            if (!model) {
+                return [];
+            }
+            const query = {
+                group: [this.cfg?.attr?.event],
+                attributes: [this.cfg?.attr?.event]
+            };
+            const res = await model.findAll(query);
+            return res?.map(item => {
+                return {
+                    name: item[this.cfg?.attr?.event],
+                    description: ""
+                }
+            });
+        }
+        catch (error) {
+            this.logger?.error({
+                flow: payload?.flow || String(Date.now()) + "00",
+                src: "KsHook:Subscriber:Model:events",
+                error: error?.message || error,
+                data: payload
+            });
         }
     }
 }
