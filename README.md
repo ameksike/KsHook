@@ -6,4 +6,5 @@ For further information, see  [Ksdp Hooks Model](https://github.com/ameksike/ksd
 ## Quick overview
 - [Create a preconfigured hook service in your project.](doc/create.service.md)
 - [Create a custom notifier ](doc/create.service.md)
-- [Create a route/controller to handle hooks](create.controllers.md)
+- [Create a route/controller to handle hooks](doc/create.controllers.md)
+- [How to use it](doc/trigger.events.md)
