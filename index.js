@@ -31,6 +31,7 @@ module.exports = {
     notifier: {
         MsTeams: require('./src/notifier/MsTeams'),
         Telegram: require('./src/notifier/Telegram'),
+        Web: require('./src/notifier/Web'),
     },
     subscriber: {
         Model: require('./src/subscriber/Model'),
