@@ -1,10 +1,10 @@
 {
   "name": "kshook",
-  "version": "1.0.0",
+  "version": "1.0.11",
   "description": "Ksike Hook library for easy implementation of Event Driven Design",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,14 +17,20 @@
     "Dependency Injection",
     "Ksike"
   ],
-  "author": "",
+  "author": {
+    "name": "Antonio Membrides Espinosa",
+    "email": "tonykssa@gmail.com",
+    "url": "https://github.com/ameksike"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ameksike/kshook/issues"
   },
   "homepage": "https://github.com/ameksike/kshook#readme",
   "dependencies": {
-    "ksdp": "^1.2.2"
+    "axios": "^1.5.0",
+    "kscryp": "^1.0.12",
+    "ksdp": "^1.2.5"
   },
   "devDependencies": {
     "jest": "^29.6.4"
