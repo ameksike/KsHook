@@ -137,7 +137,7 @@ class Model {
             if (Array.isArray(payload)) {
                 const out = [];
                 for (let item of payload) {
-                    out.push(this.subscribe(payload));
+                    out.push(this.unsubscribe(item));
                 }
                 return out;
             }
