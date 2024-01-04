@@ -14,7 +14,7 @@ describe('Load KsHook Lib', () => {
         expect(KsHook.notifier.MsTeams).toBeInstanceOf(Function);
         expect(KsHook.notifier.Telegram).toBeInstanceOf(Function);
         expect(KsHook.notifier.Web).toBeInstanceOf(Function);
-        expect(KsHook.subscriber.Sequelize).toBeInstanceOf(Function);
+        expect(KsHook.subscriber.Model).toBeInstanceOf(Function);
         done();
     });
 });
