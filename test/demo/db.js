@@ -39,6 +39,26 @@ const list = [
         owner: null,
         group: 'second',
         status: 1
+    }, {
+        id: 4,
+        event: 'onLoginFailure',
+        notifier: 'locator',
+        value: 'newrelic.service:onEvent',
+        owner: null,
+        group: 'second',
+        status: 1,
+        processor: 'Custom',
+        expression: "failure = 10"
+    }, {
+        id: 5,
+        event: 'onLoginFailure',
+        notifier: 'locator',
+        value: 'newrelic.service:onEvent',
+        owner: null,
+        group: 'second',
+        status: 1,
+        processor: 'Custom',
+        expression: "failure > max"
     }
 ].map(itm => new DaoModel(itm));
 

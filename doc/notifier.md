@@ -1,3 +1,42 @@
+# Notifier:
+- Implements actions based on parameters received, including the event name, subscriber content, and specified parameters at the time of event triggering.
+- Executes actions based on event data and subscriber information.
+
+## Structure
+```js
+class Notifier {
+    /**
+     * @description execute HTTP notifications for Web Hooks
+     * @param {EventData} payload 
+     * @returns {Object} Promise<{
+     *      data: Object, 
+     *      status: Number, 
+     *      headers: Object, 
+     *      request: ClientRequest|XMLHttpRequest, 
+     *      config: Object 
+     * }>
+     */
+    run(payload){}
+}
+```
+```js
+class EventData {
+    event: String,
+	subscriber: String,
+	date: Number,
+	data: Object, 
+	target: {
+        id: Number,
+        event: String,
+		value: String,
+		notifier: String,
+		owner: String,
+		processor: String,
+		expression: String
+    }
+}
+```
+
 ## Create a custom notifier in your project called locator
 
 ```js
