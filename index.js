@@ -26,7 +26,9 @@ module.exports = {
     },
     driver: {
         MsTeams: require('./src/driver/MsTeams'),
-        Telegram: require('./src/driver/Telegram')
+        Telegram: require('./src/driver/Telegram'),
+        DaoModel: require('./src/driver/DaoModel'),
+        DaoManager: require('./src/driver/DaoManager'),
     },
     notifier: {
         MsTeams: require('./src/notifier/MsTeams'),
@@ -35,5 +37,8 @@ module.exports = {
     },
     subscriber: {
         Model: require('./src/subscriber/Model'),
+    },
+    processor: {
+        Native: require('./src/processor/Native'),
     }
 };

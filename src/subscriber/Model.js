@@ -10,7 +10,9 @@ class Model {
                 value: 'value',
                 owner: 'owner',
                 group: 'group',
-                status: 'status'
+                status: 'status',
+                processor: 'processor',
+                expression: 'expression'
             },
             model: {
                 hook: 'hooks',
@@ -19,8 +21,31 @@ class Model {
         };
     }
 
-    configure(cfg) {
-        Object.assign(this, cfg);
+    /**
+     * @description Configure the model subscriber lib
+     * @param {Object} options 
+     * @param {Object} options.models model list 
+     * @param {Object} options.driver db connection   
+     * @param {Object} options.manager db manager lib
+     * @param {Object} options.logger log handler 
+     * @param {Object} options.cfg  
+     * @param {Object} options.cfg.attr Attributes names association 
+     * @param {String} options.cfg.attr.id
+     * @param {String} options.cfg.attr.notifier
+     * @param {String} options.cfg.attr.event
+     * @param {String} options.cfg.attr.value
+     * @param {String} options.cfg.attr.owner
+     * @param {String} options.cfg.attr.group
+     * @param {String} options.cfg.attr.status
+     * @param {String} options.cfg.attr.processor
+     * @param {String} options.cfg.attr.expression
+     * @param {Object} options.cfg.model Model names association  
+     * @param {String} options.cfg.model.hook  
+     * @param {String} options.cfg.model.event  
+     * @returns {Object} self reference
+     */
+    configure(options) {
+        Object.assign(this, options);
         return this;
     }
 
@@ -51,6 +76,8 @@ class Model {
         payload?.owner && (where[this.cfg?.attr?.owner] = payload.owner);
         payload?.group && (where[this.cfg?.attr?.group] = payload.group);
         payload?.status && (where[this.cfg?.attr?.status] = payload.status);
+        payload?.processor && (where[this.cfg?.attr?.processor] = payload.processor);
+        payload?.expression && (where[this.cfg?.attr?.expression] = payload.expression);
         payload?.notifier && (where[this.cfg?.attr?.notifier] = payload.notifier);
         return where;
     }
@@ -72,6 +99,8 @@ class Model {
         item?.owner && (row.owner = item[this.cfg?.attr?.owner]);
         item?.group && (row.group = item[this.cfg?.attr?.group]);
         item?.value && (row.value = item[this.cfg?.attr?.value]);
+        item?.processor && (row.processor = item[this.cfg?.attr?.processor]);
+        item?.expression && (row.expression = item[this.cfg?.attr?.expression]);
         item?.notifier && (row.notifier = item[this.cfg?.attr?.notifier]);
         item?.status && (row.status = item[this.cfg?.attr?.status]);
         row.value && (row.value = kscryp.decode(row.value, "json"));

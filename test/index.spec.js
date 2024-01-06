@@ -15,6 +15,7 @@ describe('Load KsHook Lib', () => {
         expect(KsHook.notifier.Telegram).toBeInstanceOf(Function);
         expect(KsHook.notifier.Web).toBeInstanceOf(Function);
         expect(KsHook.subscriber.Model).toBeInstanceOf(Function);
+        expect(KsHook.processor.Native).toBeInstanceOf(Function);
         done();
     });
 });
