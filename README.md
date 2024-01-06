@@ -52,8 +52,8 @@ Register subscribers for each event in the data model
 --------------------------------------------------------------------
 | id | event  | notifier | value    | processor | expression       |
 --------------------------------------------------------------------
-| 1 | logout  | locator  | newrelic | null      | null             |
-| 2 | login   | locator  | alert    | native    | failure EQUAL 11 |
+| 1  | logout | locator  | newrelic | null      | null             |
+| 2  | login  | locator  | alert    | native    | failure EQUAL 11 |
 --------------------------------------------------------------------
 ```
 
