@@ -47,6 +47,7 @@ Load your custom notifier, subscriber, and processors:
 const locator = require('./notifier.locator');
 const { models, driver, manager } = require('./db');
 ```
+
 Register subscribers for each event in the data model 
 ```
 --------------------------------------------------------------------
