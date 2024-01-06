@@ -24,9 +24,9 @@ class Model {
     /**
      * @description Configure the model subscriber lib
      * @param {Object} options 
-     * @param {Object} options.models model list 
-     * @param {Object} options.driver db connection   
-     * @param {Object} options.manager db manager lib
+     * @param {Object} options.models DaoModel list 
+     * @param {Object} options.driver db connection or DaoManager instance  
+     * @param {Object} options.manager db manager or DaoManager class
      * @param {Object} options.logger log handler 
      * @param {Object} options.cfg  
      * @param {Object} options.cfg.attr Attributes names association 
