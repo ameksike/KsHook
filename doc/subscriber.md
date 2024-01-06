@@ -5,39 +5,72 @@
 - Defines the data type and handles interactions with various data storage solutions.
 
 By default KsHook provides support for the following subscribers:
-- **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases. 
+
+- **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases.
 
 ## Model Subscriber
+
 The DaoModel is equivalent to Sequelize models, the manager property of the SubscriberOption is the equivalent of the **Sequelize** class, and the driver property is the equivalent of a **Sequelize instance** or connection.
 
 ### Configuring the Model Subscriber with a Sequelize ORM
+
 ```js
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 
 const connection = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'path/to/database.sqlite'
+  dialect: "sqlite",
+  storage: "path/to/database.sqlite",
 });
 
-const User = sequelize.define('User', {
-  firstName: {
-    type: DataTypes.STRING,
-    allowNull: false
+const hooks = sequelize.define(
+  "hooks",
+  {
+    id: {
+      field: "id",
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+      unique: true,
+    },
+    event: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+    },
+    notifier: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+    },
+    value: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    owner: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    group: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1,
+    }
   },
-  lastName: {
-    type: DataTypes.STRING
-  }
-}, {});
+  {}
+);
 
 hook.subscriber.get("Model").configure({
-    driver: connection,
-    manager: Sequelize,
-    models: [User]
+  driver: connection,
+  manager: Sequelize,
+  models: [hooks],
 });
 ```
 
-
 ## Structure
+
 ```js
 class Subscriber {
   /**
@@ -108,14 +141,14 @@ class SubscriberOption {
             expression: 'expression'
         },
         // Model names association
-        model: {  
+        model: {
             hook: "hooks",
             event: "events",
         }
     }
     // DaoModel list
-    models: { 
-        [name: String]: DaoModel 
+    models: {
+        [name: String]: DaoModel
     },
     // db manager or DaoManager class
     manager: DaoManager,
@@ -135,12 +168,12 @@ class SubscriberOption {
 
 Install the library:
 
-``` npm install kshook```
+` npm install kshook`
 
 Import the KsHook library
 
 ```js
-const KsHook = require('kshook');
+const KsHook = require("kshook");
 ```
 
 Create a KsHook instance
@@ -150,15 +183,16 @@ const hook = KsHook.get();
 ```
 
 Register a custom or anonymous Subscriber named **NoSQLDB**
+
 ```js
 hook.notifier.set({
-    name: "NoSQLDB",
-    target: class {
-        configure(options) {}
-        async events(payload) {}
-        async subscriptions(payload) {}
-        async subscribe(payload) {}
-        async unsubscribe(payload) {}
-    }
+  name: "NoSQLDB",
+  target: class {
+    configure(options) {}
+    async events(payload) {}
+    async subscriptions(payload) {}
+    async subscribe(payload) {}
+    async unsubscribe(payload) {}
+  },
 });
 ```
