@@ -2,6 +2,11 @@
 - Implements actions based on parameters received, including the event name, subscriber content, and specified parameters at the time of event triggering.
 - Executes actions based on event data and subscriber information.
 
+By default **KsHook** provides support for the following notifiers:
+- MsTeams
+- Telegram
+- Web Notifications
+
 ## Structure
 ```js
 class Notifier {
@@ -35,6 +40,38 @@ class EventData {
 		expression: String
     }
 }
+```
+
+
+## Create a custom Notifier
+
+Install the library:
+
+``` npm install kshook```
+
+Import the KsHook library
+
+```js
+const KsHook = require('kshook');
+```
+
+Create a KsHook instance
+
+```js
+const hook = KsHook.get();
+```
+
+Register a custom or anonymous Notifier named **locator**
+
+```js
+hook.notifier.set({
+    name: "locator",
+    target: class {
+        run(payload) {
+            return payload;
+        }
+    }
+});
 ```
 
 ## Create a custom notifier in your project called locator

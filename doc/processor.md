@@ -3,6 +3,9 @@
 - Evaluates logical expressions and determines whether to proceed with Notifier execution.
 - Provides flexibility to conditionally execute actions based on configurable logic.
 
+By default KsHook provides support for the following processors:
+- Native
+
 ## Structure
 ```js
 class Processor {

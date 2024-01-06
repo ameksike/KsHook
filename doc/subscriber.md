@@ -4,6 +4,9 @@
 - Interacts with different data storage sources (memory, databases, files, MySQL, MongoDB, Redis, etc.).
 - Defines the data type and handles interactions with various data storage solutions.
 
+By default KsHook provides support for the following processors:
+- **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases. The DaoModel is equivalent to Sequelize models, the manager property of the SubscriberOption is the equivalent of the **Sequelize** class, and the driver property is the equivalent of a **Sequelize instance** or connection.
+
 ## Structure
 ```js
 class Subscriber {
@@ -92,4 +95,34 @@ class SubscriberOption {
 }
 ```
 
-## Create a custom Processor
+## Create a custom Subscriber
+
+Install the library:
+
+``` npm install kshook```
+
+Import the KsHook library
+
+```js
+const KsHook = require('kshook');
+```
+
+Create a KsHook instance
+
+```js
+const hook = KsHook.get();
+```
+
+Register a custom or anonymous Subscriber named **NoSQLDB**
+```js
+hook.notifier.set({
+    name: "NoSQLDB",
+    target: class {
+        configure(options) {}
+        async events(payload) {}
+        async subscriptions(payload) {}
+        async subscribe(payload) {}
+        async unsubscribe(payload) {}
+    }
+});
+```
