@@ -1,7 +1,6 @@
 const hook = require('./demo/rule.processor');
 
-describe('Rule Processor', () => {
-    beforeAll(async () => { });
+describe('trigger', () => {
 
     it("trigger", async () => {
         const res = hook.trigger({

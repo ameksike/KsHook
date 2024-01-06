@@ -15,7 +15,7 @@ const list = [
         id: 2,
         event: 'onProfileFailure',
         notifier: 'locator',
-        value: 'newrelic.service:onEvent2',
+        value: 'newrelic.service:onEvent',
         owner: null,
         group: 'second',
         status: 1,
@@ -25,12 +25,20 @@ const list = [
         id: 3,
         event: 'onProfileFailure',
         notifier: 'locator',
-        value: 'newrelic.service:onEvent3',
+        value: 'newrelic.service:onEvent',
         owner: null,
         group: 'second',
         status: 1,
         processor: 'Native',
         expression: "failure LESS THAN EQUAL 10 AND step EQUAL 'STEP-1'"
+    }, {
+        id: 3,
+        event: 'onEvent',
+        notifier: 'locator',
+        value: 'newrelic.service:onEvent',
+        owner: null,
+        group: 'second',
+        status: 1
     }
 ].map(itm => new DaoModel(itm));
 
