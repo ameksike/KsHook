@@ -8,6 +8,25 @@ By default KsHook provides support for the following subscribers:
 
 - **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases.
 
+
+## Start 
+
+Install the library:
+
+` npm install kshook`
+
+Import the KsHook library
+
+```js
+const KsHook = require("kshook");
+```
+
+Create a KsHook instance
+
+```js
+const hook = KsHook.get();
+```
+
 ## Model Subscriber
 
 The DaoModel is equivalent to Sequelize models, the manager property of the SubscriberOption is the equivalent of the **Sequelize** class, and the driver property is the equivalent of a **Sequelize instance** or connection.
@@ -165,22 +184,6 @@ class SubscriberOption {
 ```
 
 ## Create a custom Subscriber
-
-Install the library:
-
-` npm install kshook`
-
-Import the KsHook library
-
-```js
-const KsHook = require("kshook");
-```
-
-Create a KsHook instance
-
-```js
-const hook = KsHook.get();
-```
 
 Register a custom or anonymous Subscriber named **NoSQLDB**
 
