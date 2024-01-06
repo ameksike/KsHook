@@ -34,4 +34,4 @@ hook.subscriber.get("Model").configure({
 module.exports = hook;
 ```
 
-For more information on how to create your custom hook service and how to use this notifier, see [Create a custom notifier ](doc/create.service.md).
+For more information on how to create your custom hook service and how to use this notifier, see [Create a custom notifier ](./notifier.md).

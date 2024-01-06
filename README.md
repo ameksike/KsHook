@@ -1,12 +1,22 @@
 # KsHook: Dynamic Event Handling Library
 Ksike Hook library for easy implementation of Event Driven Design. The Hooks pattern is a design pattern that facilitates event-driven programming within a software architecture. It allows you to define events and configure them with subscribers and notifiers. Subscribers listen to specific events and define which notifier should handle them when the event is triggered. This pattern enhances modularity and extensibility in event-driven systems.
 
+This library belong to the Ksike ecosystem:
+- [KsMf](https://www.npmjs.com/package/ksmf) - Microframework (WEB, REST API, CLI, Proxy, etc)
+- [Ksdp](https://www.npmjs.com/package/ksdp) - Design Patterns Library (GoF, GRASP, IoC, DI, etc)
+- [KsCryp](https://www.npmjs.com/package/kscryp) - Cryptographic Library (RSA, JWT, x509, HEX, Base64, Hash, etc) 
+- [KsHook](https://www.npmjs.com/package/kshook) - Event Driven Library
+- [KsEval](https://www.npmjs.com/package/kseval) - Expression Evaluator Library 
+- [KsWC](https://www.npmjs.com/package/kswc) - Web API deployment Library
+
 For further information, check the following topics: 
+- [How to use it](doc/trigger.events.md)
+- [Notifiers](doc/notifier.md)
+- [Processors](doc/processor.md)
+- [Subscribers](doc/subscriber.md)
 - [Ksdp Hooks Model](https://github.com/ameksike/ksdp/blob/HEAD/doc/integration.hook.md).
 - [Create a preconfigured hook service in your project.](doc/create.service.md)
-- [Create a custom notifier ](doc/create.service.md)
 - [Create a route/controller to handle hooks](doc/create.controllers.md)
-- [How to use it](doc/trigger.events.md)
 
 ## Quick overview
 
