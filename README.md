@@ -4,9 +4,9 @@ Ksike Hook library for easy implementation of Event Driven Design. The Hooks pat
 This library belong to the Ksike ecosystem:
 - [KsMf](https://www.npmjs.com/package/ksmf) - Microframework (WEB, REST API, CLI, Proxy, etc)
 - [Ksdp](https://www.npmjs.com/package/ksdp) - Design Patterns Library (GoF, GRASP, IoC, DI, etc)
-- [KsCryp](https://www.npmjs.com/package/kscryp) - Cryptographic Library (RSA, JWT, x509, HEX, Base64, HASH, etc) 
+- [KsCryp](https://www.npmjs.com/package/kscryp) - Cryptographic Library (RSA, JWT, x509, HEX, Base64, Hash, etc) 
 - [KsHook](https://www.npmjs.com/package/kshook) - Event Driven Library
-- [KsEval](https://www.npmjs.com/package/kseval) - Expression Evaluator
+- [KsEval](https://www.npmjs.com/package/kseval) - Expression Evaluator Library 
 - [KsWC](https://www.npmjs.com/package/kswc) - Web API deployment Library
 
 For further information, check the following topics: 
