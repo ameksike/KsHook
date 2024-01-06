@@ -63,15 +63,6 @@ class Subscription {
 
 ```js
 class SubscriberOption {
-    // DaoModel list
-    models: { 
-        [name: String]: DaoModel 
-    },
-    // db manager or DaoManager class
-    manager: DaoManager,
-    // db connection or DaoManager instance
-    driver: Object,
-    logger: Object,
     // Model configuration
     cfg: {
         // Attributes names association
@@ -91,6 +82,21 @@ class SubscriberOption {
             hook: "hooks",
             event: "events",
         }
+    }
+    // DaoModel list
+    models: { 
+        [name: String]: DaoModel 
+    },
+    // db manager or DaoManager class
+    manager: DaoManager,
+    // db connection or DaoManager instance
+    driver: Object,
+    // log manager
+    logger: {
+        error(ops: Object){},
+        info(ops: Object){},
+        debug(ops: Object){},
+        log(ops: Object){}
     }
 }
 ```
