@@ -4,8 +4,38 @@
 - Interacts with different data storage sources (memory, databases, files, MySQL, MongoDB, Redis, etc.).
 - Defines the data type and handles interactions with various data storage solutions.
 
-By default KsHook provides support for the following processors:
-- **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases. The DaoModel is equivalent to Sequelize models, the manager property of the SubscriberOption is the equivalent of the **Sequelize** class, and the driver property is the equivalent of a **Sequelize instance** or connection.
+By default KsHook provides support for the following subscribers:
+- **Model**: Based on ORM models such as Sequelize, it allows the management of subscribers in relational databases. 
+
+## Model Subscriber
+The DaoModel is equivalent to Sequelize models, the manager property of the SubscriberOption is the equivalent of the **Sequelize** class, and the driver property is the equivalent of a **Sequelize instance** or connection.
+
+### Configuring the Model Subscriber with a Sequelize ORM
+```js
+const { Sequelize } = require('sequelize');
+
+const connection = new Sequelize({
+  dialect: 'sqlite',
+  storage: 'path/to/database.sqlite'
+});
+
+const User = sequelize.define('User', {
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: DataTypes.STRING
+  }
+}, {});
+
+hook.subscriber.get("Model").configure({
+    driver: connection,
+    manager: Sequelize,
+    models: [User]
+});
+```
+
 
 ## Structure
 ```js
