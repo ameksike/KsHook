@@ -43,7 +43,10 @@ class DaoModel {
     bulkCreate(data) { }
     count(options) { }
     update(data) { }
-    create(data) { }
+    create(data) { 
+        data.id = data.id || this.data.length;
+        this.data.push(new DaoModel(data));
+    }
     destroy({ where }) { }
     getTableName() { return "" }
     save(options) { }

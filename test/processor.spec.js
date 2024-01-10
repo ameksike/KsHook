@@ -1,8 +1,8 @@
 const hook = require('./demo/rule.processor');
 
-describe('trigger', () => {
+describe('Processor', () => {
 
-    it("trigger", async () => {
+    it("common processor", async () => {
         const res = hook.trigger({
             subscriber: "Model",
             event: "onProfileFailure",

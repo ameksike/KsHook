@@ -266,4 +266,4 @@ obj.Cls = Locator;
 module.exports = obj;
 ```
 
-For more information on how to create a custom notifier, see [Create a preconfigured hook service in your project.](doc/create.service.md)
+For more information on how to create a custom notifier, see [Create a preconfigured hook service in your project.](./create.service.md)
