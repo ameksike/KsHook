@@ -10,11 +10,11 @@ This library belong to the Ksike ecosystem:
 - [KsWC](https://www.npmjs.com/package/kswc) - Web API deployment Library
 
 For further information, check the following topics: 
-- [How to use it](doc/trigger.events.md)
+- [Getting Started](doc/getting.started.md)
 - [Notifiers](doc/notifier.md)
 - [Processors](doc/processor.md)
 - [Subscribers](doc/subscriber.md)
-- [Ksdp Hooks Model](https://github.com/ameksike/ksdp/blob/HEAD/doc/integration.hook.md).
+- [Ksdp Hooks Model](https://github.com/ameksike/ksdp/blob/HEAD/doc/integration.hook.md)
 - [Create a preconfigured hook service in your project.](doc/create.service.md)
 - [Create a route/controller to handle hooks](doc/create.controllers.md)
 

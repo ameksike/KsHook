@@ -1,6 +1,8 @@
 
 ## Create a hook service in your project
 
+For more information on how to create your custom hook service and how to use this notifier, see [Create a custom notifier ](./notifier.md).
+
 ```js
 const KsHook = require("kshook");
 
@@ -34,4 +36,10 @@ hook.subscriber.get("Model").configure({
 module.exports = hook;
 ```
 
-For more information on how to create your custom hook service and how to use this notifier, see [Create a custom notifier ](./notifier.md).
+For further information, check the following topics: 
+- [Notifiers](./notifier.md)
+- [Processors](./processor.md)
+- [Subscribers](./subscriber.md)
+- [Ksdp Hooks Model](https://github.com/ameksike/ksdp/blob/HEAD/doc/integration.hook.md)
+- [Create a preconfigured hook service in your project.](./create.service.md)
+- [Create a route/controller to handle hooks](./create.controllers.md)
