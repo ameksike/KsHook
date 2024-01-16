@@ -17,6 +17,8 @@
     "Patterns",
     "Hook",
     "Dependency Injection",
+    "Rules Engine",
+    "Event",
     "Ksike"
   ],
   "author": {
@@ -31,7 +33,7 @@
   "homepage": "https://github.com/ameksike/kshook#readme",
   "dependencies": {
     "axios": "^1.6.5",
-    "kscryp": "^1.0.14",
+    "kscryp": "^1.0.15",
     "ksdp": "^1.2.13",
     "kseval": "^1.0.6"
   },
