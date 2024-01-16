@@ -18,11 +18,11 @@ declare class MsTeams extends MsTeams_base {
     formatSimple(payload: any): any;
     formatMsgCardItem(itm: any): {
         name: any;
-        value: any;
+        value: string | Buffer;
     };
     formatMsgCardItemObj(itm: any): {
         name: string;
-        value: any;
+        value: string | Buffer;
     }[];
     formatMsgCard(payload: any): {
         "@type": string;
