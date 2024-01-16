@@ -1,6 +1,15 @@
 const axios = require('axios');
 
 class Web {
+    /**
+     * Represents an HTTP client request.
+     * @typedef {import('http').ClientRequest} ClientRequest
+     */
+
+    /**
+     * Represents an XMLHttpRequest object.
+     * @typedef {XMLHttpRequest} XMLHttpRequest
+     */
 
     constructor(cfg) {
         this.cfg = {
@@ -17,14 +26,14 @@ class Web {
     }
 
     /**
-     * @description execute HTTP notifications for Web Hooks
+     * @description Execute HTTP notifications for Web Hooks
      * @param {Object} payload 
      * @param {Object} payload.target
      * @param {Object|String} payload.target.value 
      * @param {Object|String} payload.target.value.url
      * @param {Object|String} payload.target.value.method
      * @param {Object|String} payload.target.value.headers
-     * @returns {Object} Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>
+     * @returns {Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>} 
      */
     run(payload) {
         const url = payload?.target?.value?.url || payload?.target?.value || this.cfg.url;

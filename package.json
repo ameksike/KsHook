@@ -1,10 +1,12 @@
 {
   "name": "kshook",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Ksike Hook library for easy implementation of Event Driven Design",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "type": "npx -p typescript tsc ./index.js --target ES2022 --module commonjs --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "repository": {
     "type": "git",
@@ -28,12 +30,13 @@
   },
   "homepage": "https://github.com/ameksike/kshook#readme",
   "dependencies": {
-    "axios": "^1.5.0",
-    "kscryp": "^1.0.12",
-    "ksdp": "^1.2.10",
+    "axios": "^1.6.5",
+    "kscryp": "^1.0.14",
+    "ksdp": "^1.2.13",
     "kseval": "^1.0.6"
   },
   "devDependencies": {
-    "jest": "^29.6.4"
+    "jest": "^29.6.4",
+    "typescript": "^5.3.3"
   }
 }
