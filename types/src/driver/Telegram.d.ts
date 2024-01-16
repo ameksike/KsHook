@@ -1,5 +1,6 @@
 export = Telegram;
-declare class Telegram {
+declare const Telegram_base: typeof import("ksdp/types/src/integration/Dip");
+declare class Telegram extends Telegram_base {
     constructor(cfg: any);
     cfg: any;
     configure(cfg: any): this;

@@ -1,13 +1,23 @@
 class KsEvent {
     /**
-     * @description execute HTTP notifications for Web Hooks
+     * Represents an HTTP client request.
+     * @typedef {import('http').ClientRequest} ClientRequest
+     */
+
+    /**
+     * Represents an XMLHttpRequest object.
+     * @typedef {XMLHttpRequest} XMLHttpRequest
+     */
+
+    /**
+     * @description Trigger event Hooks
      * @param {Object} payload 
      * @param {Object} payload.target
      * @param {Object|String} payload.target.value 
      * @param {String} payload.target.value.event
      * @param {Object|String} payload.target.value.subscriber
      * @param {Object} payload.target.value.data
-     * @returns {Object} Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>
+     * @returns {Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>} 
      */
     run(payload) {
         const event = payload?.target?.value?.event || payload?.target?.value;

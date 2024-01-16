@@ -1,9 +1,10 @@
 export = MsTeams;
-declare class MsTeams {
+declare const MsTeams_base: typeof import("ksdp/types/src/integration/Dip");
+declare class MsTeams extends MsTeams_base {
     cfg: {
         url: string;
     };
-    cmd: any;
+    cmd: import("ksdp/types/src/behavioral/Command");
     configure(cfg: any): this;
     /**
      * @description Register user account
