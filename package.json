@@ -3,8 +3,10 @@
   "version": "1.0.14",
   "description": "Ksike Hook library for easy implementation of Event Driven Design",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "type": "npx -p typescript tsc ./index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "repository": {
     "type": "git",
