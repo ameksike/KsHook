@@ -1,6 +1,8 @@
-export function get(cfg: {
-    mode: number;
-    options: any;
+export function get(cfg?: {
+    mode?: 0 | 1;
+    cls?: Function;
+    options?: any;
+    key?: string;
 }): any;
 export namespace driver {
     let MsTeams: typeof import("./src/driver/MsTeams");
