@@ -8,6 +8,12 @@ module.exports = {
      */
 
     /**
+     * @description The default Hook controller as the class to be instantiated
+     * @type {Function}
+     */
+    default: KsDp.integration.hook.Main,
+
+    /**
      * @description Get an instance of the Hook library
      * @param {Object} [cfg]
      * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
@@ -17,7 +23,7 @@ module.exports = {
      * @returns {Object} Hook
      */
     get: (cfg) => {
-        let { mode = 0, options = null, cls = KsDp.integration.hook.Main, key = 'instance' } = cfg || {};
+        let { mode = 0, options = null, cls = this.default, key = 'instance' } = cfg || {};
         options = options || {
             path: path.join(__dirname, 'src')
         };
