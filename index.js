@@ -1,35 +1,47 @@
 const path = require('path');
 const KsDp = require('ksdp');
 const store = { instance: null };
+const config = { handler: KsDp.integration.hook.Main };
 
-module.exports = {
+const KsHook = {
     /**
      * @typedef { 0 | 1 } EnumMode
+     * 
      */
 
     /**
-     * @description The default Hook controller as the class to be instantiated
-     * @type {Function}
+     * @description Get the default Hook controller as the class to be instantiated
      */
-    default: KsDp.integration.hook.Main,
+    get handler() {
+        return config.handler;
+    },
+    /**
+     * @description Set the default Hook controller as the class to be instantiated
+     * @param {Function} handler
+     * @returns {KsHook}
+     */
+    set handler(value) {
+        value instanceof Function && (config.handler = value);
+        return KsHook;
+    },
 
     /**
      * @description Get an instance of the Hook library
      * @param {Object} [cfg]
      * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
      * @param {Function} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
-     * @param {Object} [cfg.options] A single parameter to set the Hook Handler on instantiation process
+     * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
      * @returns {Object} Hook
      */
     get: (cfg) => {
-        let { mode = 0, options = null, cls = this.default, key = 'instance' } = cfg || {};
-        options = options || {
+        let { mode = 0, options = null, cls = config.handler, key = 'instance' } = cfg || {};
+        options = Array.isArray(options) ? options : [{
             path: path.join(__dirname, 'src')
-        };
+        }];
         if (!store[key] || mode) {
-            let instance = new cls(options);
-            if (mode > 1) {
+            let instance = new cls(...options);
+            if (mode) {
                 return instance;
             }
             store[key] = instance;
@@ -54,3 +66,5 @@ module.exports = {
         Native: require('./src/processor/Native'),
     }
 };
+
+module.exports = KsHook;
