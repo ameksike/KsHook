@@ -1,22 +1,65 @@
 const kscryp = require('kscryp');
 class Model {
 
+    /**
+     * @typedef {{[name:String]: Object}} List 
+     * @typedef { 'hook' | 'event' } EnumModelName 
+     * 
+     * @typedef {Object} Subscription
+     * @property {String|Number} [id]
+     * @property {String} event
+     * @property {String} notifier
+     * @property {String} value
+     * @property {String} [owner]
+     * @property {String} [group]
+     * @property {String} [status]
+     * @property {String} [processor]
+     * @property {String} [expression]
+     * @property {String} [subscriber]
+     * 
+     * @typedef {Object} MetaHook
+     * @property {String} name
+     * @property {Subscription} attr
+     * 
+     * @typedef {Object} Event
+     * @property {String} [id]
+     * @property {String} event
+     * @property {String} description
+     * @property {String} [payload]
+     * @property {String} [status]
+     * 
+     * @typedef {Object} MetaEvent
+     * @property {String} name
+     * @property {Event} attr
+     * 
+     */
     constructor() {
         this.cfg = {
-            attr: {
-                id: 'id',
-                notifier: 'notifier',
-                event: 'event',
-                value: 'value',
-                owner: 'owner',
-                group: 'group',
-                status: 'status',
-                processor: 'processor',
-                expression: 'expression'
-            },
             model: {
-                hook: 'hooks',
-                event: 'events',
+                hook: {
+                    name: 'hooks',
+                    attr: {
+                        id: 'id',
+                        notifier: 'notifier',
+                        event: 'event',
+                        value: 'value',
+                        owner: 'owner',
+                        group: 'group',
+                        status: 'status',
+                        processor: 'processor',
+                        expression: 'expression'
+                    }
+                },
+                event: {
+                    name: 'events',
+                    attr: {
+                        id: 'id',
+                        event: 'event',
+                        description: 'description',
+                        payload: 'payload',
+                        group: 'group'
+                    }
+                },
             }
         };
     }
@@ -24,106 +67,87 @@ class Model {
     /**
      * @description Configure the model subscriber lib
      * @param {Object} options 
-     * @param {Object} options.models DaoModel list 
-     * @param {Object} options.driver db connection or DaoManager instance  
-     * @param {Object} options.manager db manager or DaoManager class
-     * @param {Object} options.logger log handler 
-     * @param {Object} options.cfg  
-     * @param {Object} options.cfg.attr Attributes names association 
-     * @param {String} options.cfg.attr.id
-     * @param {String} options.cfg.attr.notifier
-     * @param {String} options.cfg.attr.event
-     * @param {String} options.cfg.attr.value
-     * @param {String} options.cfg.attr.owner
-     * @param {String} options.cfg.attr.group
-     * @param {String} options.cfg.attr.status
-     * @param {String} options.cfg.attr.processor
-     * @param {String} options.cfg.attr.expression
-     * @param {Object} options.cfg.model Model names association  
-     * @param {String} options.cfg.model.hook  
-     * @param {String} options.cfg.model.event  
-     * @returns {Object} self reference
+     * @param {List} [options.models] DaoModel list 
+     * @param {Object} [options.driver] db connection or DaoManager instance  
+     * @param {Object} [options.manager] db manager or DaoManager class
+     * @param {Console} [options.logger] log handler 
+     * @param {Object} [options.cfg]  
+     * @param {Object} [options.cfg.model] Model metadata
+     * @param {MetaHook} [options.cfg.model.hook] Hook Model metadata  
+     * @param {MetaEvent} [options.cfg.model.event] Event Model metadata  
+     * @returns {Model} self reference
      */
     configure(options) {
         Object.assign(this, options);
         return this;
     }
 
-    #getModel() {
-        if (!this.models || !this.models[this.cfg?.model?.hook]) {
+    /**
+     * @description Get Model instance by name
+     * @param {EnumModelName} [name=hook] 
+     * @returns {Object} Model
+     */
+    #getModel(name = 'hook') {
+        const meta = this.cfg?.model[name];
+        if (!this.models || !this.models[meta?.name]) {
             return null;
         }
-        return this.models[this.cfg?.model?.hook];
+        return this.models[meta?.name];
     }
 
     /**
      * @description format query
-     * @param {Object|Array} item
-     * @param {Number} item.id 
-     * @param {Number} item.owner
-     * @param {Number} item.group 
-     * @param {Number} item.status
-     * @param {String} item.event 
-     * @param {String} item.notifier 
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {Subscription|Event} payload
+     * @param {EnumModelName} [name=hook]
+     * @returns {List} 
      */
-    #getQuery(payload) {
+    #getQuery(payload, name = 'hook') {
         let where = {};
-        payload.status === undefined && (payload.status = 1);
-        payload.status === "-" && (delete payload["status"]);
-        payload?.id && (where[this.cfg?.attr?.id] = payload.id);
-        payload?.event && (where[this.cfg?.attr?.event] = payload.event);
-        payload?.owner && (where[this.cfg?.attr?.owner] = payload.owner);
-        payload?.group && (where[this.cfg?.attr?.group] = payload.group);
-        payload?.status && (where[this.cfg?.attr?.status] = payload.status);
-        payload?.processor && (where[this.cfg?.attr?.processor] = payload.processor);
-        payload?.expression && (where[this.cfg?.attr?.expression] = payload.expression);
-        payload?.notifier && (where[this.cfg?.attr?.notifier] = payload.notifier);
+        let meta = this.cfg?.model[name]?.attr || {};
+        for (let i in payload) {
+            if (payload[i] !== undefined && meta[i] !== undefined) {
+                where[meta[i]] = payload[i];
+                if (i === 'status') {
+                    payload[i] === undefined && (where[meta[i]] = 1);
+                    payload[i] === '-' && (delete where[meta[i]]);
+                }
+            }
+        }
         return where;
     }
 
     /**
      * @description format getRow
-     * @param {Object|Array} item
-     * @param {Number} item.id 
-     * @param {Number} item.owner
-     * @param {Number} item.group 
-     * @param {Number} item.status
-     * @param {String} item.event 
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {List} item
+     * @param {EnumModelName} [name=hook]
+     * @returns {Subscription|Event} row
      */
-    #getRow(item) {
+    #getRow(item, name = 'hook') {
         let row = {};
-        item?.id && (row.id = item[this.cfg?.attr?.id]);
-        item?.event && (row.event = item[this.cfg?.attr?.event]);
-        item?.owner && (row.owner = item[this.cfg?.attr?.owner]);
-        item?.group && (row.group = item[this.cfg?.attr?.group]);
-        item?.value && (row.value = item[this.cfg?.attr?.value]);
-        item?.processor && (row.processor = item[this.cfg?.attr?.processor]);
-        item?.expression && (row.expression = item[this.cfg?.attr?.expression]);
-        item?.notifier && (row.notifier = item[this.cfg?.attr?.notifier]);
-        item?.status && (row.status = item[this.cfg?.attr?.status]);
-        row.value && (row.value = kscryp.decode(row.value, "json"));
+        let met = this.cfg?.model[name]?.attr || {};
+        for (let i in met) {
+            item[met[i]] !== undefined && (row[i] = item[met[i]]);
+        }
+        row.value && (row.value = kscryp.decode(row.value, 'json'));
         return row;
     }
 
+    /**
+     * @param {*} payload 
+     * @returns {*}
+     */
     format(payload) {
         return payload;
     }
 
     /**
      * @description save subscriptions
-     * @param {Object|Array} payload
-     * @param {Number} payload.id 
-     * @param {Number} payload.owner
-     * @param {Number} payload.group 
-     * @param {Number} payload.status
-     * @param {String} payload.event 
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {Subscription|Array<Subscription>} payload
+     * @returns {Subscription|Array<Subscription>} succeed subscriptions
      */
     async subscribe(payload) {
         try {
-            const model = this.#getModel();
+            const model = this.#getModel('hook');
             if (!model || !payload) {
                 return null;
             }
@@ -139,8 +163,8 @@ class Model {
         }
         catch (error) {
             this.logger?.error({
-                flow: payload?.flow || String(Date.now()) + "00",
-                src: "KsHook:Subscriber:Model:subscribe",
+                flow: payload?.flow || String(Date.now()) + '00',
+                src: 'KsHook:Subscriber:Model:subscribe',
                 error: error?.message || error,
                 data: payload
             });
@@ -149,17 +173,12 @@ class Model {
 
     /**
      * @description remove subscriptions
-     * @param {Object|Array} payload
-     * @param {Number} payload.id 
-     * @param {Number} payload.owner
-     * @param {Number} payload.group 
-     * @param {Number} payload.status
-     * @param {String} payload.event 
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {Subscription|Array<Subscription>} payload
+     * @returns {Subscription|Array<Subscription>} succeed unsubscriptions
      */
     async unsubscribe(payload) {
         try {
-            const model = this.#getModel();
+            const model = this.#getModel('hook');
             if (!model || !payload) {
                 return null;
             }
@@ -175,8 +194,8 @@ class Model {
         }
         catch (error) {
             this.logger?.error({
-                flow: payload?.flow || String(Date.now()) + "00",
-                src: "KsHook:Subscriber:Model:unsubscribe",
+                flow: payload?.flow || String(Date.now()) + '00',
+                src: 'KsHook:Subscriber:Model:unsubscribe',
                 error: error?.message || error,
                 data: payload
             });
@@ -185,28 +204,23 @@ class Model {
 
     /**
      * @description get the subscriptions list
-     * @param {Object} payload
-     * @param {Number} payload.id 
-     * @param {Number} payload.owner
-     * @param {Number} payload.group 
-     * @param {Number} payload.status
-     * @param {String} payload.event 
-     * @returns {Array} [{ group: String, owner: String, event: String, value: String|Object, notifier: String }]  
+     * @param {List} payload 
+     * @returns {Array<Subscription>}
      */
     async subscriptions(payload) {
         try {
-            const model = this.#getModel();
+            const model = this.#getModel('hook');
             if (!model) {
                 return [];
             }
-            const where = this.#getQuery(payload);
+            const where = this.#getQuery(payload, 'hook');
             const res = await model.findAll({ where });
             return (res?.map && res.map(item => this.#getRow(item))) || [];
         }
         catch (error) {
             this.logger?.error({
-                flow: payload?.flow || String(Date.now()) + "00",
-                src: "KsHook:Subscriber:Model:subscriptions",
+                flow: payload?.flow || String(Date.now()) + '00',
+                src: 'KsHook:Subscriber:Model:subscriptions',
                 error: error?.message || error,
                 data: payload
             });
@@ -215,31 +229,27 @@ class Model {
 
     /**
      * @description get the event list
-     * @param {Object} payload 
-     * @returns {Arrar} [{ name: String, description: String }]
+     * @param {List} payload 
+     * @returns {Array<Event>}
      */
     async events(payload) {
         try {
-            const model = this.#getModel();
+            const model = this.#getModel('event');
             if (!model) {
                 return [];
             }
-            const query = {
-                group: [this.cfg?.attr?.event],
-                attributes: [this.cfg?.attr?.event]
-            };
+            const query = {};
+            const attrs = this.cfg?.model?.event?.attr || {};
+            const where = this.#getQuery(payload, 'event');
+            attrs?.event && (query.group = [attrs.event]);
+            where && (query.where = where);
             const res = await model.findAll(query);
-            return res?.map(item => {
-                return {
-                    name: item[this.cfg?.attr?.event],
-                    description: ""
-                }
-            });
+            return res?.map(item => this.#getRow(item, 'event'));
         }
         catch (error) {
             this.logger?.error({
-                flow: payload?.flow || String(Date.now()) + "00",
-                src: "KsHook:Subscriber:Model:events",
+                flow: payload?.flow || String(Date.now()) + '00',
+                src: 'KsHook:Subscriber:Model:events',
                 error: error?.message || error,
                 data: payload
             });

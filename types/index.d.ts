@@ -1,7 +1,8 @@
+export let handler: typeof import("ksdp/types/src/integration/hook");
 export function get(cfg?: {
     mode?: 0 | 1;
     cls?: Function;
-    options?: any;
+    options?: any[];
     key?: string;
 }): any;
 export namespace driver {
