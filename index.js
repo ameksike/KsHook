@@ -1,43 +1,62 @@
 const path = require('path');
 const KsDp = require('ksdp');
-const store = { instance: null };
-const config = { handler: KsDp.integration.hook.Main };
 
-/**
- * @typedef { 0 | 1 } EnumMode
- * @typedef {typeof import("ksdp").integration.hook} KsHookCls
- */
+const store = {
+    instance: null
+};
+const config = {
+    handler: KsDp.integration.hook.Main,
+    mode: 0,
+    options: null,
+    key: 'instance'
+};
 
 const KsHook = {
 
     /**
+     * @typedef {({[name:String]:Object})} List 
+     **/
+
+    /**
+     * @typedef { 0 | 1 } EnumMode
+     */
+
+    /**
+     * @typedef {import("ksdp").integration.hook} IHook
+     */
+
+    /**
      * @description Get the default Hook controller as the class to be instantiated
-     * @returns {KsHookCls}
+     * @returns {IHook}
      */
     get handler() {
         return config.handler;
     },
     /**
      * @description Set the default Hook controller as the class to be instantiated
-     * @param {KsHookCls} handler
+     * @param {IHook} handler
      * @returns {KsHook}
      */
     set handler(value) {
         value instanceof Function && (config.handler = value);
         return KsHook;
     },
-
     /**
      * @description Get an instance of the Hook library
      * @param {Object} [cfg]
      * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
-     * @param {KsHookCls} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
+     * @param {IHook} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
      * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
      * @returns {Object} Hook
      */
     get: (cfg) => {
-        let { mode = 0, options = null, cls = config.handler, key = 'instance' } = cfg || {};
+        let {
+            mode = config.mode,
+            options = config.options,
+            cls = config.handler,
+            key = config.key
+        } = cfg || {};
         options = Array.isArray(options) ? options : [{
             path: path.join(__dirname, 'src')
         }];
@@ -49,6 +68,24 @@ const KsHook = {
             store[key] = instance;
         }
         return store[key];
+    },
+    /**
+     * @description configure the hook library
+     * @param {Object} [cfg]
+     * @param {List} [cfg.driver] driver instance list 
+     * @param {List} [cfg.handler] default driver to use
+     * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
+     * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
+     * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
+     * @returns {KsHook} self
+     */
+    set: (cfg) => {
+        cfg?.driver && Object.assign(store, cfg.driver);
+        cfg?.handler && (config.handler = cfg.handler);
+        cfg?.options && (config.options = cfg.options);
+        cfg?.key && (config.key = cfg.key);
+        cfg?.mode && (config.mode = cfg.mode);
+        return KsHook;
     },
     driver: {
         MsTeams: require('./src/driver/MsTeams'),
@@ -68,5 +105,6 @@ const KsHook = {
         Native: require('./src/processor/Native'),
     }
 };
+
 
 module.exports = KsHook;

@@ -1,4 +1,43 @@
 export = Model;
+/**
+ * @typedef {({[name:String]:Object} | Array)} List
+ **/
+/**
+ * @typedef {Object} Subscription
+ * @property {Number} [id]
+ * @property {String} event
+ * @property {*} [value]
+ * @property {String} [data]
+ * @property {String} [notifier]
+ * @property {String} [group]
+ * @property {Number} [owner]
+ * @property {Number} [status]
+ * @property {String} [processor]
+ * @property {String} [expression]
+ * @property {Date} [date]
+ * @property {Function} [onPreTrigger] - formater action to run before process the event but after the subscriber format action
+ * @property {Function} [onPosTrigger] - formater action to run after process the event action
+ **/
+/**
+ * @typedef {Object} Event
+ * @property {String|Number} [id]
+ * @property {String} event
+ * @property {String} description
+ * @property {String} [payload]
+ * @property {String} [group]
+ * @property {String} [status]
+ */
+/**
+ * @typedef { 'hook' | 'event' } EnumModelName
+ *
+ * @typedef {Object} MetaHook
+ * @property {String} name
+ * @property {Subscription} attr
+ *
+ * @typedef {Object} MetaEvent
+ * @property {String} name
+ * @property {Event} attr
+ */
 declare class Model {
     cfg: {
         model: {
@@ -24,6 +63,7 @@ declare class Model {
                     description: string;
                     payload: string;
                     group: string;
+                    status: string;
                 };
             };
         };
@@ -42,179 +82,84 @@ declare class Model {
      * @returns {Model} self reference
      */
     configure(options: {
-        models?: {
-            [name: string]: any;
-        };
+        models?: List;
         driver?: any;
         manager?: any;
         logger?: Console;
         cfg?: {
             model?: {
-                hook?: {
-                    name: string;
-                    attr: {
-                        id?: string | number;
-                        event: string;
-                        notifier: string;
-                        value: string;
-                        owner?: string;
-                        group?: string;
-                        status?: string;
-                        processor?: string;
-                        expression?: string;
-                        subscriber?: string;
-                    };
-                };
-                event?: {
-                    name: string;
-                    attr: {
-                        id?: string;
-                        event: string;
-                        description: string;
-                        payload?: string;
-                        status?: string;
-                    };
-                };
+                hook?: MetaHook;
+                event?: MetaEvent;
             };
         };
     }): Model;
-    /**
-     * @param {*} payload
-     * @returns {*}
-     */
-    format(payload: any): any;
     /**
      * @description save subscriptions
      * @param {Subscription|Array<Subscription>} payload
      * @returns {Subscription|Array<Subscription>} succeed subscriptions
      */
-    subscribe(payload: {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    } | {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    }[]): {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    } | {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    }[];
+    subscribe(payload: Subscription | Array<Subscription>): Subscription | Array<Subscription>;
     /**
      * @description remove subscriptions
      * @param {Subscription|Array<Subscription>} payload
      * @returns {Subscription|Array<Subscription>} succeed unsubscriptions
      */
-    unsubscribe(payload: {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    } | {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    }[]): {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    } | {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    }[];
+    unsubscribe(payload: Subscription | Array<Subscription>): Subscription | Array<Subscription>;
     /**
      * @description get the subscriptions list
      * @param {List} payload
      * @returns {Array<Subscription>}
      */
-    subscriptions(payload: {
-        [name: string]: any;
-    }): {
-        id?: string | number;
-        event: string;
-        notifier: string;
-        value: string;
-        owner?: string;
-        group?: string;
-        status?: string;
-        processor?: string;
-        expression?: string;
-        subscriber?: string;
-    }[];
+    subscriptions(payload: List): Array<Subscription>;
     /**
      * @description get the event list
      * @param {List} payload
      * @returns {Array<Event>}
      */
-    events(payload: {
-        [name: string]: any;
-    }): {
-        id?: string;
-        event: string;
-        description: string;
-        payload?: string;
-        status?: string;
-    }[];
+    events(payload: List): Array<Event>;
     #private;
 }
+declare namespace Model {
+    export { List, Subscription, Event, EnumModelName, MetaHook, MetaEvent };
+}
+type List = any[] | {
+    [name: string]: any;
+};
+type Subscription = {
+    id?: number;
+    event: string;
+    value?: any;
+    data?: string;
+    notifier?: string;
+    group?: string;
+    owner?: number;
+    status?: number;
+    processor?: string;
+    expression?: string;
+    date?: Date;
+    /**
+     * - formater action to run before process the event but after the subscriber format action
+     */
+    onPreTrigger?: Function;
+    /**
+     * - formater action to run after process the event action
+     */
+    onPosTrigger?: Function;
+};
+type Event = {
+    id?: string | number;
+    event: string;
+    description: string;
+    payload?: string;
+    group?: string;
+    status?: string;
+};
+type EnumModelName = 'hook' | 'event';
+type MetaHook = {
+    name: string;
+    attr: Subscription;
+};
+type MetaEvent = {
+    name: string;
+    attr: Event;
+};
