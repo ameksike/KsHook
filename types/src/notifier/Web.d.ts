@@ -1,13 +1,13 @@
 export = Web;
+/**
+ * Represents an HTTP client request.
+ * @typedef {import('http').ClientRequest} ClientRequest
+ */
+/**
+ * Represents an XMLHttpRequest object.
+ * @typedef {XMLHttpRequest} XMLHttpRequest
+ */
 declare class Web {
-    /**
-     * Represents an HTTP client request.
-     * @typedef {import('http').ClientRequest} ClientRequest
-     */
-    /**
-     * Represents an XMLHttpRequest object.
-     * @typedef {XMLHttpRequest} XMLHttpRequest
-     */
     constructor(cfg: any);
     cfg: {
         url: string;
@@ -32,7 +32,18 @@ declare class Web {
         data: any;
         status: number;
         headers: any;
-        request: any;
+        request: ClientRequest | XMLHttpRequest;
         config: any;
     }>;
 }
+declare namespace Web {
+    export { ClientRequest, XMLHttpRequest };
+}
+/**
+ * Represents an HTTP client request.
+ */
+type ClientRequest = import('http').ClientRequest;
+/**
+ * Represents an XMLHttpRequest object.
+ */
+type XMLHttpRequest = XMLHttpRequest;

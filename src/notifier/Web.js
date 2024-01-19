@@ -1,16 +1,15 @@
 const axios = require('axios');
+/**
+ * Represents an HTTP client request.
+ * @typedef {import('http').ClientRequest} ClientRequest
+ */
+
+/**
+ * Represents an XMLHttpRequest object.
+ * @typedef {XMLHttpRequest} XMLHttpRequest
+ */
 
 class Web {
-    /**
-     * Represents an HTTP client request.
-     * @typedef {import('http').ClientRequest} ClientRequest
-     */
-
-    /**
-     * Represents an XMLHttpRequest object.
-     * @typedef {XMLHttpRequest} XMLHttpRequest
-     */
-
     constructor(cfg) {
         this.cfg = {
             url: process.env.CHANNEL_URL,

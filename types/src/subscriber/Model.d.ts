@@ -1,113 +1,165 @@
 export = Model;
+/**
+ * @typedef {({[name:String]:Object} | Array)} List
+ **/
+/**
+ * @typedef {Object} Subscription
+ * @property {Number} [id]
+ * @property {String} event
+ * @property {*} [value]
+ * @property {String} [data]
+ * @property {String} [notifier]
+ * @property {String} [group]
+ * @property {Number} [owner]
+ * @property {Number} [status]
+ * @property {String} [processor]
+ * @property {String} [expression]
+ * @property {Date} [date]
+ * @property {Function} [onPreTrigger] - formater action to run before process the event but after the subscriber format action
+ * @property {Function} [onPosTrigger] - formater action to run after process the event action
+ **/
+/**
+ * @typedef {Object} Event
+ * @property {String|Number} [id]
+ * @property {String} event
+ * @property {String} description
+ * @property {String} [payload]
+ * @property {String} [group]
+ * @property {String} [status]
+ */
+/**
+ * @typedef { 'hook' | 'event' } EnumModelName
+ *
+ * @typedef {Object} MetaHook
+ * @property {String} name
+ * @property {Subscription} attr
+ *
+ * @typedef {Object} MetaEvent
+ * @property {String} name
+ * @property {Event} attr
+ */
 declare class Model {
     cfg: {
-        attr: {
-            id: string;
-            notifier: string;
-            event: string;
-            value: string;
-            owner: string;
-            group: string;
-            status: string;
-            processor: string;
-            expression: string;
-        };
         model: {
-            hook: string;
-            event: string;
+            hook: {
+                name: string;
+                attr: {
+                    id: string;
+                    notifier: string;
+                    event: string;
+                    value: string;
+                    owner: string;
+                    group: string;
+                    status: string;
+                    processor: string;
+                    expression: string;
+                };
+            };
+            event: {
+                name: string;
+                attr: {
+                    id: string;
+                    event: string;
+                    description: string;
+                    payload: string;
+                    group: string;
+                    status: string;
+                };
+            };
         };
     };
     /**
      * @description Configure the model subscriber lib
      * @param {Object} options
-     * @param {Object} options.models DaoModel list
-     * @param {Object} options.driver db connection or DaoManager instance
-     * @param {Object} options.manager db manager or DaoManager class
-     * @param {Object} options.logger log handler
-     * @param {Object} options.cfg
-     * @param {Object} options.cfg.attr Attributes names association
-     * @param {String} options.cfg.attr.id
-     * @param {String} options.cfg.attr.notifier
-     * @param {String} options.cfg.attr.event
-     * @param {String} options.cfg.attr.value
-     * @param {String} options.cfg.attr.owner
-     * @param {String} options.cfg.attr.group
-     * @param {String} options.cfg.attr.status
-     * @param {String} options.cfg.attr.processor
-     * @param {String} options.cfg.attr.expression
-     * @param {Object} options.cfg.model Model names association
-     * @param {String} options.cfg.model.hook
-     * @param {String} options.cfg.model.event
-     * @returns {Object} self reference
+     * @param {List} [options.models] DaoModel list
+     * @param {Object} [options.driver] db connection or DaoManager instance
+     * @param {Object} [options.manager] db manager or DaoManager class
+     * @param {Console} [options.logger] log handler
+     * @param {Object} [options.cfg]
+     * @param {Object} [options.cfg.model] Model metadata
+     * @param {MetaHook} [options.cfg.model.hook] Hook Model metadata
+     * @param {MetaEvent} [options.cfg.model.event] Event Model metadata
+     * @returns {Model} self reference
      */
     configure(options: {
-        models: any;
-        driver: any;
-        manager: any;
-        logger: any;
-        cfg: {
-            attr: {
-                id: string;
-                notifier: string;
-                event: string;
-                value: string;
-                owner: string;
-                group: string;
-                status: string;
-                processor: string;
-                expression: string;
-            };
-            model: {
-                hook: string;
-                event: string;
+        models?: List;
+        driver?: any;
+        manager?: any;
+        logger?: Console;
+        cfg?: {
+            model?: {
+                hook?: MetaHook;
+                event?: MetaEvent;
             };
         };
-    }): any;
-    format(payload: any): any;
+    }): Model;
     /**
      * @description save subscriptions
-     * @param {Object|Array} payload
-     * @param {Number} payload.id
-     * @param {Number} payload.owner
-     * @param {Number} payload.group
-     * @param {Number} payload.status
-     * @param {String} payload.event
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {Subscription|Array<Subscription>} payload
+     * @returns {Subscription|Array<Subscription>} succeed subscriptions
      */
-    subscribe(payload: any | any[]): any | any[];
+    subscribe(payload: Subscription | Array<Subscription>): Subscription | Array<Subscription>;
     /**
      * @description remove subscriptions
-     * @param {Object|Array} payload
-     * @param {Number} payload.id
-     * @param {Number} payload.owner
-     * @param {Number} payload.group
-     * @param {Number} payload.status
-     * @param {String} payload.event
-     * @returns {Object|Array} { group: String, owner: String, event: String, value: String|Object, notifier: String }
+     * @param {Subscription|Array<Subscription>} payload
+     * @returns {Subscription|Array<Subscription>} succeed unsubscriptions
      */
-    unsubscribe(payload: any | any[]): any | any[];
+    unsubscribe(payload: Subscription | Array<Subscription>): Subscription | Array<Subscription>;
     /**
      * @description get the subscriptions list
-     * @param {Object} payload
-     * @param {Number} payload.id
-     * @param {Number} payload.owner
-     * @param {Number} payload.group
-     * @param {Number} payload.status
-     * @param {String} payload.event
-     * @returns {Array} [{ group: String, owner: String, event: String, value: String|Object, notifier: String }]
+     * @param {List} payload
+     * @returns {Array<Subscription>}
      */
-    subscriptions(payload: {
-        id: number;
-        owner: number;
-        group: number;
-        status: number;
-        event: string;
-    }): any[];
+    subscriptions(payload: List): Array<Subscription>;
     /**
      * @description get the event list
-     * @param {Object} payload
-     * @returns {Arrar} [{ name: String, description: String }]
+     * @param {List} payload
+     * @returns {Array<Event>}
      */
-    events(payload: any): Arrar;
+    events(payload: List): Array<Event>;
     #private;
 }
+declare namespace Model {
+    export { List, Subscription, Event, EnumModelName, MetaHook, MetaEvent };
+}
+type List = any[] | {
+    [name: string]: any;
+};
+type Subscription = {
+    id?: number;
+    event: string;
+    value?: any;
+    data?: string;
+    notifier?: string;
+    group?: string;
+    owner?: number;
+    status?: number;
+    processor?: string;
+    expression?: string;
+    date?: Date;
+    /**
+     * - formater action to run before process the event but after the subscriber format action
+     */
+    onPreTrigger?: Function;
+    /**
+     * - formater action to run after process the event action
+     */
+    onPosTrigger?: Function;
+};
+type Event = {
+    id?: string | number;
+    event: string;
+    description: string;
+    payload?: string;
+    group?: string;
+    status?: string;
+};
+type EnumModelName = 'hook' | 'event';
+type MetaHook = {
+    name: string;
+    attr: Subscription;
+};
+type MetaEvent = {
+    name: string;
+    attr: Event;
+};
