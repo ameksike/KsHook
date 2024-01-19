@@ -3,21 +3,23 @@ const KsDp = require('ksdp');
 const store = { instance: null };
 const config = { handler: KsDp.integration.hook.Main };
 
+/**
+ * @typedef { 0 | 1 } EnumMode
+ * @typedef {typeof import("ksdp").integration.hook} KsHookCls
+ */
+
 const KsHook = {
-    /**
-     * @typedef { 0 | 1 } EnumMode
-     * 
-     */
 
     /**
      * @description Get the default Hook controller as the class to be instantiated
+     * @returns {KsHookCls}
      */
     get handler() {
         return config.handler;
     },
     /**
      * @description Set the default Hook controller as the class to be instantiated
-     * @param {Function} handler
+     * @param {KsHookCls} handler
      * @returns {KsHook}
      */
     set handler(value) {
@@ -29,7 +31,7 @@ const KsHook = {
      * @description Get an instance of the Hook library
      * @param {Object} [cfg]
      * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
-     * @param {Function} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
+     * @param {KsHookCls} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
      * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
      * @returns {Object} Hook

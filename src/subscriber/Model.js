@@ -1,38 +1,49 @@
 const kscryp = require('kscryp');
+
+/**
+ * @typedef {({[name:String]:Object} | Array)} List 
+ **/
+
+/**
+ * @typedef {Object} Subscription
+ * @property {Number} [id]
+ * @property {String} event
+ * @property {*} [value]
+ * @property {String} [data]
+ * @property {String} [notifier]
+ * @property {String} [group]
+ * @property {Number} [owner]
+ * @property {Number} [status]
+ * @property {String} [processor]
+ * @property {String} [expression]
+ * @property {Date} [date]
+ * @property {Function} [onPreTrigger] - formater action to run before process the event but after the subscriber format action
+ * @property {Function} [onPosTrigger] - formater action to run after process the event action
+ **/
+
+/**
+ * @typedef {Object} Event
+ * @property {String|Number} [id]
+ * @property {String} event
+ * @property {String} description
+ * @property {String} [payload]
+ * @property {String} [group]
+ * @property {String} [status]
+ */
+
+/**
+ * @typedef { 'hook' | 'event' } EnumModelName 
+ *
+ * @typedef {Object} MetaHook
+ * @property {String} name
+ * @property {Subscription} attr
+ * 
+ * @typedef {Object} MetaEvent
+ * @property {String} name
+ * @property {Event} attr
+ */
 class Model {
 
-    /**
-     * @typedef {{[name:String]: Object}} List 
-     * @typedef { 'hook' | 'event' } EnumModelName 
-     * 
-     * @typedef {Object} Subscription
-     * @property {String|Number} [id]
-     * @property {String} event
-     * @property {String} notifier
-     * @property {String} value
-     * @property {String} [owner]
-     * @property {String} [group]
-     * @property {String} [status]
-     * @property {String} [processor]
-     * @property {String} [expression]
-     * @property {String} [subscriber]
-     * 
-     * @typedef {Object} MetaHook
-     * @property {String} name
-     * @property {Subscription} attr
-     * 
-     * @typedef {Object} Event
-     * @property {String} [id]
-     * @property {String} event
-     * @property {String} description
-     * @property {String} [payload]
-     * @property {String} [status]
-     * 
-     * @typedef {Object} MetaEvent
-     * @property {String} name
-     * @property {Event} attr
-     * 
-     */
     constructor() {
         this.cfg = {
             model: {
@@ -57,7 +68,8 @@ class Model {
                         event: 'event',
                         description: 'description',
                         payload: 'payload',
-                        group: 'group'
+                        group: 'group',
+                        status: 'status'
                     }
                 },
             }
@@ -130,14 +142,6 @@ class Model {
         }
         row.value && (row.value = kscryp.decode(row.value, 'json'));
         return row;
-    }
-
-    /**
-     * @param {*} payload 
-     * @returns {*}
-     */
-    format(payload) {
-        return payload;
     }
 
     /**

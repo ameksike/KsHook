@@ -1,14 +1,14 @@
+/**
+ * Represents an HTTP client request.
+ * @typedef {import('http').ClientRequest} ClientRequest
+ */
+
+/**
+ * Represents an XMLHttpRequest object.
+ * @typedef {XMLHttpRequest} XMLHttpRequest
+ */
+
 class KsEvent {
-    /**
-     * Represents an HTTP client request.
-     * @typedef {import('http').ClientRequest} ClientRequest
-     */
-
-    /**
-     * Represents an XMLHttpRequest object.
-     * @typedef {XMLHttpRequest} XMLHttpRequest
-     */
-
     /**
      * @description Trigger event Hooks
      * @param {Object} payload 
