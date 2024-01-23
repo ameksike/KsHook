@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios').default;
 const ksdp = require('ksdp');
 const kscryp = require('kscryp');
 
