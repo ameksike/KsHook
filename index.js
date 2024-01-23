@@ -2,14 +2,11 @@ const path = require('path');
 const KsDp = require('ksdp');
 
 const { build } = require('./src/types');
-/**
- * @typedef {import('./src/types').TList} TList 
- * @typedef {import('./src/types').IHook} IHook 
- */
 
 const store = {
     instance: null
 };
+
 const config = {
     handler: KsDp.integration.hook.Main,
     mode: 0,
@@ -17,10 +14,11 @@ const config = {
     key: 'instance'
 };
 
-const KsHook = {
-
+const KsHook = {    
     /**
-     * @typedef { 0 | 1 } EnumMode
+     * @typedef {import('./src/types').TList} TList 
+     * @typedef {import('./src/types').IHook} IHook 
+     * @typedef { 0 | 1 } TEnumMode
      */
 
     /**
@@ -40,7 +38,7 @@ const KsHook = {
     /**
      * @description Get an instance of the Hook library
      * @param {Object} [cfg]
-     * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
+     * @param {TEnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
      * @param {IHook} [cfg.cls="KsDp.integration.hook.Main"] Define the Hook handler as a class to be instantiated
      * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
@@ -72,7 +70,7 @@ const KsHook = {
      * @param {IHook} [cfg.handler] default driver to use
      * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
-     * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
+     * @param {TEnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
      * @returns {KsHook} self
      */
     set: (cfg) => {
@@ -102,6 +100,5 @@ const KsHook = {
         Native: require('./src/processor/Native'),
     }
 };
-
 
 module.exports = KsHook;

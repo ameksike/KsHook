@@ -1,3 +1,4 @@
+const kscryp = require('kscryp');
 class KsReq {
 
     constructor() {
@@ -9,26 +10,26 @@ class KsReq {
     }
 
     post(payload, headers = {}, options = {}) {
-        payload = (typeof payload === "string" ? { url: payload } : payload) || {};
-        payload.method = "POST";
+        payload = (typeof payload === 'string' ? { url: payload } : payload) || {};
+        payload.method = 'POST';
         return this.run(payload, headers, options);
     }
 
     put(payload, headers = {}, options = {}) {
-        payload = (typeof payload === "string" ? { url: payload } : payload) || {};
-        payload.method = "PUT";
+        payload = (typeof payload === 'string' ? { url: payload } : payload) || {};
+        payload.method = 'PUT';
         return this.run(payload, headers, options);
     }
 
     delete(payload, headers = {}, options = {}) {
-        payload = (typeof payload === "string" ? { url: payload } : payload) || {};
-        payload.method = "DELETE";
+        payload = (typeof payload === 'string' ? { url: payload } : payload) || {};
+        payload.method = 'DELETE';
         return this.run(payload, headers, options);
     }
 
     async run(payload, headers = {}, options = {}) {
         try {
-            payload = typeof payload === "string" ? { url: payload } : payload;
+            payload = typeof payload === 'string' ? { url: payload } : payload;
             const opts = {
                 method: 'GET',
                 headers: {
@@ -38,13 +39,13 @@ class KsReq {
                 ...options
             };
 
-            if (payload.method && ["POST", "PUT"].includes(payload.method)) {
+            if (payload.method && ['POST', 'PUT'].includes(payload.method)) {
                 opts.method = payload.method;
-                opts.body = kscryp.encode(payload.data, "json");
+                opts.body = kscryp.encode(payload.data, 'json');
             }
 
             const response = await this.drv.req(payload.url, opts);
-            const data = this.drv.type === "fetch" ? await response.json() : response.data;
+            const data = this.drv.type === 'fetch' ? await response.json() : response.data;
             return { data };
         }
         catch (error) {
@@ -61,13 +62,13 @@ class KsReq {
     handler() {
         try {
             return {
-                type: "fetch",
+                type: 'fetch',
                 req: fetch
             };
         }
         catch (error) {
             return {
-                type: "axios",
+                type: 'axios',
                 req: require('axios')
             }
         }
