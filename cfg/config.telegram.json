@@ -6,5 +6,6 @@
     "url_info": "https://api.telegram.org/bot{{BOT_TOKEN}}/getMe",
     "url_update": "https://api.telegram.org/bot{{BOT_TOKEN}}/getUpdates",
     "url_send": "https://api.telegram.org/bot{{BOT_TOKEN}}/sendMessage",
-    "url_hook": "https://api.telegram.org/bot{{BOT_TOKEN}}/setWebhook"
+    "url_hook": "https://api.telegram.org/bot{{BOT_TOKEN}}/setWebhook",
+    "redirect_uris": ""
 }

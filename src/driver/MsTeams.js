@@ -4,26 +4,41 @@ const kscryp = require('kscryp');
 
 class MsTeams extends ksdp.integration.Dip {
 
+    /**
+     * @type {Console|null}
+     */
+    logger;
+
     constructor() {
         super();
         this.cfg = {
             url: process.env.CHANNEL_URL_OUT
         };
-        this.cmd = new ksdp.behavioral.Command();
+        this.cmd = new ksdp.behavioral.Command({});
+        this.logger = null;
     }
 
-    configure(cfg) {
+    configure(cfg = {}) {
         cfg && Object.assign(this.cfg, cfg);
         return this;
     }
 
     /**
      * @description Register user account
-     * @param {Object} payload 
-     * @param {String} payload.text 
-     * @returns {Boolean} status
+     * @param {Object} payload
+     * @param {String} [payload.title] 
+     * @param {String} [payload.text] 
+     * @param {String} [payload.subtitle] 
+     * @param {Object} [payload.facts] 
+     * @param {String} [payload.flow] 
+     * @param {*} [payload.result] 
+     * @param {Object} [opt] 
+     * @param {String} [opt.url] 
+     * @param {String} [opt.format] 
+     * @param {String} [opt.flow] 
+     * @returns {Promise<boolean>} status
      */
-    async send(payload, opt) {
+    async send(payload, opt = {}) {
         try {
             const url = opt?.url || this.cfg.url;
             const act = "format" + (opt?.format || "Simple");
@@ -33,7 +48,7 @@ class MsTeams extends ksdp.integration.Dip {
         }
         catch (error) {
             this.logger?.error({
-                flow: opt?.flow || payloadt?.flow,
+                flow: opt?.flow || payload?.flow,
                 src: "KsHook:Connector:MsTeams:send",
                 message: error?.message,
                 data: arguments

@@ -93,26 +93,26 @@ class DaoManager {
          */
         col: Symbol('col'),
         /**
-         * Operator <@ (PG array contained by operator)
+         * Operator < @ (PG array contained by operator)
          *
          * ```js
          * [Op.contained]: [1, 2]
          * ```
          * In SQL
          * ```sql
-         * <@ [1, 2)
+         * < @ [1, 2)
          * ```
          */
         contained: Symbol('contained'),
         /**
-         * Operator @> (PG array contains operator)
+         * Operator @ > (PG array contains operator)
          *
          * ```js
          * [Op.contains]: [1, 2]
          * ```
          * In SQL
          * ```sql
-         * @> [1, 2)
+         * - @ > [1, 2)
          * ```
          */
         contains: Symbol('contains'),

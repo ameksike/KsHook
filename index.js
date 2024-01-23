@@ -1,6 +1,12 @@
 const path = require('path');
 const KsDp = require('ksdp');
 
+const { build } = require('./src/types');
+/**
+ * @typedef {import('./src/types').TList} TList 
+ * @typedef {import('./src/types').IHook} IHook 
+ */
+
 const store = {
     instance: null
 };
@@ -14,15 +20,7 @@ const config = {
 const KsHook = {
 
     /**
-     * @typedef {({[name:String]:Object})} List 
-     **/
-
-    /**
      * @typedef { 0 | 1 } EnumMode
-     */
-
-    /**
-     * @typedef {import("ksdp").integration.hook} IHook
      */
 
     /**
@@ -34,12 +32,10 @@ const KsHook = {
     },
     /**
      * @description Set the default Hook controller as the class to be instantiated
-     * @param {IHook} handler
-     * @returns {KsHook}
+     * @param {IHook} value
      */
     set handler(value) {
         value instanceof Function && (config.handler = value);
-        return KsHook;
     },
     /**
      * @description Get an instance of the Hook library
@@ -61,7 +57,7 @@ const KsHook = {
             path: path.join(__dirname, 'src')
         }];
         if (!store[key] || mode) {
-            let instance = new cls(...options);
+            let instance = build(cls, options);
             if (mode) {
                 return instance;
             }
@@ -72,8 +68,8 @@ const KsHook = {
     /**
      * @description configure the hook library
      * @param {Object} [cfg]
-     * @param {List} [cfg.driver] driver instance list 
-     * @param {List} [cfg.handler] default driver to use
+     * @param {TList} [cfg.driver] driver instance list 
+     * @param {IHook} [cfg.handler] default driver to use
      * @param {Array} [cfg.options] List of parameters to configure the Hook Handler in the instantiation process
      * @param {String} [cfg.key=instance] A namespace key to save the Hook handler instances
      * @param {EnumMode} [cfg.mode=0] Forces creating a new instance if set to 1; otherwise it behaves as a singleton by default
@@ -96,6 +92,7 @@ const KsHook = {
     notifier: {
         MsTeams: require('./src/notifier/MsTeams'),
         Telegram: require('./src/notifier/Telegram'),
+        Event: require('./src/notifier/Event'),
         Web: require('./src/notifier/Web'),
     },
     subscriber: {
