@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "type": "npx -p typescript tsc ./index.js --target ES2022 --module commonjs --declaration --allowJs --checkJs --emitDeclarationOnly --esModuleInterop --allowSyntheticDefaultImports --resolveJsonModule --outDir types",
-    "build": "tsc",
+    "build:dev": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint . --ext .js,.ts"
   },
