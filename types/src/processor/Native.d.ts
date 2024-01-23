@@ -1,3 +1,5 @@
-export = Native;
-import { NativeEval } from 'kseval';
-declare class Native extends NativeEval { }
+export = exports;
+declare const exports_base: any;
+declare class exports extends exports_base {
+    [x: string]: any;
+}

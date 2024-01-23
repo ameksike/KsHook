@@ -11,14 +11,14 @@ class DaoModel {
             this.dataValue = data;
         }
         return new Proxy(this, {
-            get(target, prop) {
+            get(target, prop, receiver) {
                 if (prop === "data") {
                     return target.data;
                 }
                 if (target?.dataValue?.hasOwnProperty(prop)) {
                     return target?.dataValue[prop];
                 }
-                return Reflect.get(...arguments);
+                return Reflect.get(target, prop, receiver);
             }
         });
     }

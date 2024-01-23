@@ -1,28 +1,38 @@
 /**
- * Represents an HTTP client request.
- * @typedef {import('http').ClientRequest} ClientRequest
- */
-
-/**
- * Represents an XMLHttpRequest object.
- * @typedef {XMLHttpRequest} XMLHttpRequest
+ * @typedef {import('../types').THook} THook 
+ * @typedef {import('../types').TReqEvent} TReqEvent
+ * @typedef {import('../types').TResEvent} TResEvent 
+ * @typedef {import('../types').TDtaEvent} TDtaEvent 
  */
 
 class KsEvent {
     /**
-     * @description Trigger event Hooks
+     * @type {THook|null}
+     */
+    hook = null;
+
+    /**
+     * @description Send MsTeams messages
      * @param {Object} payload 
-     * @param {Object} payload.target
-     * @param {Object|String} payload.target.value 
-     * @param {String} payload.target.value.event
-     * @param {Object|String} payload.target.value.subscriber
-     * @param {Object} payload.target.value.data
-     * @returns {Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>} 
+     * @param {String} [payload.subscriber]
+     * @param {Object} [payload.target]
+     * @param {TReqEvent|String} [payload.target.value] 
+     * @param {TDtaEvent} [payload.data]
+     * @returns {*} response 
      */
     run(payload) {
-        const event = payload?.target?.value?.event || payload?.target?.value;
-        const subscriber = payload?.target?.value?.subscriber || payload?.subscriber;
-        const data = payload?.target?.value?.data;
+        let event, subscriber, data;
+        if (typeof payload?.target?.value === "object") {
+            data = payload?.target?.value?.data;
+            event = payload?.target?.value?.event;
+            subscriber = payload?.target?.value?.subscriber;
+        } else {
+            event = payload?.target?.value;
+            subscriber = payload?.subscriber;
+        }
+        if (!event) {
+            return null;
+        }
         const body = {
             subscriber,
             event,
@@ -31,7 +41,7 @@ class KsEvent {
                 ...data
             },
         };
-        return this.hook.trigger(body);
+        return this.hook?.trigger(body);
     }
 }
 

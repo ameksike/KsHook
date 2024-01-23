@@ -1,48 +1,33 @@
 const kscryp = require('kscryp');
 
 /**
- * @typedef {({[name:String]:Object} | Array)} List 
- **/
-
-/**
- * @typedef {Object} Subscription
- * @property {Number} [id]
- * @property {String} event
- * @property {*} [value]
- * @property {String} [data]
- * @property {String} [notifier]
- * @property {String} [group]
- * @property {Number} [owner]
- * @property {Number} [status]
- * @property {String} [processor]
- * @property {String} [expression]
- * @property {Date} [date]
- * @property {Function} [onPreTrigger] - formater action to run before process the event but after the subscriber format action
- * @property {Function} [onPosTrigger] - formater action to run after process the event action
- **/
-
-/**
- * @typedef {Object} Event
- * @property {String|Number} [id]
- * @property {String} event
- * @property {String} description
- * @property {String} [payload]
- * @property {String} [group]
- * @property {String} [status]
+ * @typedef {import('../types').TList} TList 
+ * @typedef {import('../types').THook} THook 
+ * @typedef {import('../types').TEvent} TEvent 
+ * @typedef {import('../types').TEmission} TEmission 
+ * @typedef {import('../types').TMetaHook} TMetaHook 
+ * @typedef {import('../types').TMetaEvent} TMetaEvent 
+ * @typedef {import('../types').TSubscription} TSubscription 
  */
 
 /**
  * @typedef { 'hook' | 'event' } EnumModelName 
- *
- * @typedef {Object} MetaHook
- * @property {String} name
- * @property {Subscription} attr
- * 
- * @typedef {Object} MetaEvent
- * @property {String} name
- * @property {Event} attr
  */
 class Model {
+    /**
+     * @type {THook}
+     */
+    hook;
+
+    /**
+     * @type {Console}
+     */
+    logger;
+
+    /**
+     * @type {TList}
+     */
+    models;
 
     constructor() {
         this.cfg = {
@@ -54,6 +39,7 @@ class Model {
                         notifier: 'notifier',
                         event: 'event',
                         value: 'value',
+                        param: 'param',
                         owner: 'owner',
                         group: 'group',
                         status: 'status',
@@ -79,14 +65,14 @@ class Model {
     /**
      * @description Configure the model subscriber lib
      * @param {Object} options 
-     * @param {List} [options.models] DaoModel list 
+     * @param {TList} [options.models] DaoModel list 
      * @param {Object} [options.driver] db connection or DaoManager instance  
      * @param {Object} [options.manager] db manager or DaoManager class
      * @param {Console} [options.logger] log handler 
      * @param {Object} [options.cfg]  
      * @param {Object} [options.cfg.model] Model metadata
-     * @param {MetaHook} [options.cfg.model.hook] Hook Model metadata  
-     * @param {MetaEvent} [options.cfg.model.event] Event Model metadata  
+     * @param {TMetaHook} [options.cfg.model.hook] Hook Model metadata  
+     * @param {TMetaEvent} [options.cfg.model.event] Event Model metadata  
      * @returns {Model} self reference
      */
     configure(options) {
@@ -97,7 +83,7 @@ class Model {
     /**
      * @description Get Model instance by name
      * @param {EnumModelName} [name=hook] 
-     * @returns {Object} Model
+     * @returns {*} Model
      */
     #getModel(name = 'hook') {
         const meta = this.cfg?.model[name];
@@ -109,9 +95,9 @@ class Model {
 
     /**
      * @description format query
-     * @param {Subscription|Event} payload
+     * @param {TSubscription|TEvent|TList} payload
      * @param {EnumModelName} [name=hook]
-     * @returns {List} 
+     * @returns {TList} 
      */
     #getQuery(payload, name = 'hook') {
         let where = {};
@@ -130,12 +116,12 @@ class Model {
 
     /**
      * @description format getRow
-     * @param {List} item
+     * @param {TList} item
      * @param {EnumModelName} [name=hook]
-     * @returns {Subscription|Event} row
+     * @returns {TSubscription|Event} row
      */
     #getRow(item, name = 'hook') {
-        let row = {};
+        let row = { event: null };
         let met = this.cfg?.model[name]?.attr || {};
         for (let i in met) {
             item[met[i]] !== undefined && (row[i] = item[met[i]]);
@@ -146,8 +132,8 @@ class Model {
 
     /**
      * @description save subscriptions
-     * @param {Subscription|Array<Subscription>} payload
-     * @returns {Subscription|Array<Subscription>} succeed subscriptions
+     * @param {TSubscription|Array<TSubscription>} payload
+     * @returns {Promise<TSubscription[]>} succeed subscriptions
      */
     async subscribe(payload) {
         try {
@@ -162,12 +148,12 @@ class Model {
                 let data = this.#getRow(payload);
                 let where = this.#getQuery(payload);
                 let row = await model.findOne({ where });
-                return await (row ? row.update(data) : model.create(data));
+                return [await (row ? row.update(data) : model.create(data))];
             }
         }
         catch (error) {
             this.logger?.error({
-                flow: payload?.flow || String(Date.now()) + '00',
+                flow: (Array.isArray(payload) ? payload[0]?.flow : payload?.flow) || String(Date.now()) + '00',
                 src: 'KsHook:Subscriber:Model:subscribe',
                 error: error?.message || error,
                 data: payload
@@ -177,21 +163,14 @@ class Model {
 
     /**
      * @description remove subscriptions
-     * @param {Subscription|Array<Subscription>} payload
-     * @returns {Subscription|Array<Subscription>} succeed unsubscriptions
+     * @param {TSubscription} payload
+     * @returns {Promise<TSubscription>} succeed unsubscriptions
      */
-    async unsubscribe(payload) {
+    async remove(payload) {
         try {
             const model = this.#getModel('hook');
             if (!model || !payload) {
                 return null;
-            }
-            if (Array.isArray(payload)) {
-                const out = [];
-                for (let item of payload) {
-                    out.push(this.unsubscribe(item));
-                }
-                return out;
             }
             let where = this.#getQuery(payload);
             return await model.destroy({ where });
@@ -207,9 +186,26 @@ class Model {
     }
 
     /**
+     * @description remove subscriptions
+     * @param {TSubscription|Array<TSubscription>} payload
+     * @returns {Promise<TSubscription[]>} succeed unsubscriptions
+     */
+    async unsubscribe(payload) {
+        if (Array.isArray(payload)) {
+            const out = [];
+            for (let item of payload) {
+                out.push(this.remove(item));
+            }
+            return Promise.all(out);
+        } else {
+            return [await this.remove(payload)];
+        }
+    }
+
+    /**
      * @description get the subscriptions list
-     * @param {List} payload 
-     * @returns {Array<Subscription>}
+     * @param {TList} payload 
+     * @returns {Promise<TSubscription[]>}
      */
     async subscriptions(payload) {
         try {
@@ -233,8 +229,8 @@ class Model {
 
     /**
      * @description get the event list
-     * @param {List} payload 
-     * @returns {Array<Event>}
+     * @param {TList} payload 
+     * @returns {Promise<Event[]>}
      */
     async events(payload) {
         try {
@@ -243,7 +239,7 @@ class Model {
                 return [];
             }
             const query = {};
-            const attrs = this.cfg?.model?.event?.attr || {};
+            const attrs = this.cfg?.model?.event?.attr || { event: null };
             const where = this.#getQuery(payload, 'event');
             attrs?.event && (query.group = [attrs.event]);
             where && (query.where = where);
@@ -258,6 +254,21 @@ class Model {
                 data: payload
             });
         }
+    }
+
+    /**
+     * @description preformat subscriptions payload before precess the event
+     * @param {TEmission} payload 
+     * @returns {TEmission} formated payload
+     */
+    format(payload) {
+        if (payload?.target?.param) {
+            let processor = this.hook?.processor?.get('Native');
+            let info = {};
+            let data = processor?.run(payload.target.param, payload.data, info);
+            data && (payload.data = data);
+        }
+        return payload;
     }
 }
 

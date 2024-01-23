@@ -1,12 +1,23 @@
 const MsTeamsDriver = require('../driver/MsTeams');
+
+/**
+ * @typedef {import('../types').TReqMsTeams} TReqMsTeams
+ * @typedef {import('../types').TResMsTeams} TResMsTeams 
+ * @typedef {import('../types').TDtaMsTeams} TDtaMsTeams 
+ */
 class MsTeams {
-    constructor(cfg) {
+    constructor(cfg = null) {
         this.cfg = {};
         this.drv = new MsTeamsDriver();
         this.configure(cfg);
     }
 
-    configure(cfg) {
+    /**
+     * @description configure the web notificator 
+     * @param {*} cfg 
+     * @returns {MsTeams} self 
+     */
+    configure(cfg = null) {
         cfg && Object.assign(this.cfg, cfg);
         this.drv.configure(this.cfg);
         return this;
@@ -16,14 +27,9 @@ class MsTeams {
      * @description Send MsTeams messages
      * @param {Object} payload 
      * @param {Object} payload.target
-     * @param {Object|String} payload.target.value 
-     * @param {String} payload.target.value.url
-     * @param {Object} [payload.data]
-     * @param {String} payload.data.title
-     * @param {String} payload.data.subtitle
-     * @param {String} payload.data.message
-     * @param {Object} payload.data.facts
-     * @returns {Promise<Boolean>} 
+     * @param {TReqMsTeams|String} payload.target.value 
+     * @param {TDtaMsTeams} [payload.data]
+     * @returns {Promise<TResMsTeams>} response 
      */
     run(payload) {
         return this.drv.send({
@@ -33,7 +39,7 @@ class MsTeams {
             facts: payload?.data?.facts || {}
         }, {
             format: payload?.data?.format || "MsgCard",
-            url: payload?.target?.value?.url || payload?.target?.value
+            url: typeof payload?.target?.value === "object" ? payload?.target?.value?.url : payload?.target?.value
         });
     }
 }

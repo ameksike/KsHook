@@ -1,49 +1,41 @@
 export = Web;
 /**
- * Represents an HTTP client request.
- * @typedef {import('http').ClientRequest} ClientRequest
- */
-/**
- * Represents an XMLHttpRequest object.
- * @typedef {XMLHttpRequest} XMLHttpRequest
+ * @typedef {import('../types').TClientRequest} TClientRequest
+ * @typedef {import('../types').TReqWeb} TReqWeb
+ * @typedef {import('../types').TResWeb} TResWeb
+ * @typedef {import('../types').TDtaWeb} TDtaWeb
  */
 declare class Web {
-    constructor(cfg: any);
+    constructor(cfg?: any);
     cfg: {
         url: string;
         method: string;
     };
-    configure(cfg: any): this;
+    /**
+     * @description configure the web notificator
+     * @param {*} cfg
+     * @returns {Web} self
+     */
+    configure(cfg?: any): Web;
     /**
      * @description Execute HTTP notifications for Web Hooks
      * @param {Object} payload
-     * @param {Object} payload.target
-     * @param {Object|String} payload.target.value
-     * @param {Object|String} payload.target.value.url
-     * @param {Object|String} payload.target.value.method
-     * @param {Object|String} payload.target.value.headers
-     * @returns {Promise <{data: Object, status: Number, headers: Object, request: ClientRequest|XMLHttpRequest, config: Object }>}
+     * @param {Object} [payload.target]
+     * @param {TReqWeb|String} [payload.target.value]
+     * @param {TDtaWeb} [payload.data]
+     * @returns {Promise <TResWeb>} result
      */
     run(payload: {
-        target: {
-            value: any | string;
+        target?: {
+            value?: TReqWeb | string;
         };
-    }): Promise<{
-        data: any;
-        status: number;
-        headers: any;
-        request: ClientRequest | XMLHttpRequest;
-        config: any;
-    }>;
+        data?: TDtaWeb;
+    }): Promise<TResWeb>;
 }
 declare namespace Web {
-    export { ClientRequest, XMLHttpRequest };
+    export { TClientRequest, TReqWeb, TResWeb, TDtaWeb };
 }
-/**
- * Represents an HTTP client request.
- */
-type ClientRequest = import('http').ClientRequest;
-/**
- * Represents an XMLHttpRequest object.
- */
-type XMLHttpRequest = XMLHttpRequest;
+type TClientRequest = import('../types').TClientRequest;
+type TReqWeb = import('../types').TReqWeb;
+type TResWeb = import('../types').TResWeb;
+type TDtaWeb = import('../types').TDtaWeb;

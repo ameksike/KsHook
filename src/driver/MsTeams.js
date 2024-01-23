@@ -1,29 +1,44 @@
-const axios = require('axios');
+const axios = require('axios').default;
 const ksdp = require('ksdp');
 const kscryp = require('kscryp');
 
 class MsTeams extends ksdp.integration.Dip {
+
+    /**
+     * @type {Console|null}
+     */
+    logger;
 
     constructor() {
         super();
         this.cfg = {
             url: process.env.CHANNEL_URL_OUT
         };
-        this.cmd = new ksdp.behavioral.Command();
+        this.cmd = new ksdp.behavioral.Command({});
+        this.logger = null;
     }
 
-    configure(cfg) {
+    configure(cfg = {}) {
         cfg && Object.assign(this.cfg, cfg);
         return this;
     }
 
     /**
      * @description Register user account
-     * @param {Object} payload 
-     * @param {String} payload.text 
-     * @returns {Boolean} status
+     * @param {Object} payload
+     * @param {String} [payload.title] 
+     * @param {String} [payload.text] 
+     * @param {String} [payload.subtitle] 
+     * @param {Object} [payload.facts] 
+     * @param {String} [payload.flow] 
+     * @param {*} [payload.result] 
+     * @param {Object} [opt] 
+     * @param {String} [opt.url] 
+     * @param {String} [opt.format] 
+     * @param {String} [opt.flow] 
+     * @returns {Promise<boolean>} status
      */
-    async send(payload, opt) {
+    async send(payload, opt = {}) {
         try {
             const url = opt?.url || this.cfg.url;
             const act = "format" + (opt?.format || "Simple");
@@ -33,7 +48,7 @@ class MsTeams extends ksdp.integration.Dip {
         }
         catch (error) {
             this.logger?.error({
-                flow: opt?.flow || payloadt?.flow,
+                flow: opt?.flow || payload?.flow,
                 src: "KsHook:Connector:MsTeams:send",
                 message: error?.message,
                 data: arguments
@@ -42,16 +57,31 @@ class MsTeams extends ksdp.integration.Dip {
         }
     }
 
+    /**
+     * @description Structure the output with a simple format
+     * @param {*} payload 
+     * @returns {*} structure
+     */
     formatSimple(payload) {
         return typeof (payload) === 'string' ? { text: payload } : payload;
     }
 
+    /**
+     * @description Structure the output items with a tuple format for MsgCard
+     * @param {*} itm 
+     * @returns {*} structure Item
+     */
     formatMsgCardItem(itm) {
         let name = itm?.name || "Datos";
         let value = kscryp.encode(itm?.value || itm, "json");
         return { name, value }
     }
 
+    /**
+     * @description Structure the output items with an object format for MsgCard
+     * @param {*} itm 
+     * @returns {*} structure Item
+     */
     formatMsgCardItemObj(itm) {
         let tmp = [];
         for (let i in itm) {
@@ -62,10 +92,14 @@ class MsTeams extends ksdp.integration.Dip {
         return tmp;
     }
 
+    /**
+     * @description Structure the output with a card format
+     * @param {*} payload 
+     * @returns {*} structure
+     */
     formatMsgCard(payload) {
         payload = payload || {};
         payload.facts = Array.isArray(payload.facts) ? payload.facts.map(itm => this.formatMsgCardItem(itm)) : this.formatMsgCardItemObj(payload?.facts);
-
         return {
             "@type": "MessageCard",
             "@context": "http://schema.org/extensions",
