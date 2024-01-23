@@ -37,20 +37,28 @@ declare class MsTeams extends MsTeams_base {
         format?: string;
         flow?: string;
     }, ...args: any[]): Promise<boolean>;
+    /**
+     * @description Structure the output with a simple format
+     * @param {*} payload
+     * @returns {*} structure
+     */
     formatSimple(payload: any): any;
-    formatMsgCardItem(itm: any): {
-        name: any;
-        value: string | Buffer;
-    };
-    formatMsgCardItemObj(itm: any): {
-        name: string;
-        value: string | Buffer;
-    }[];
-    formatMsgCard(payload: any): {
-        "@type": string;
-        "@context": string;
-        themeColor: any;
-        summary: any;
-        sections: any;
-    };
+    /**
+     * @description Structure the output items with a tuple format for MsgCard
+     * @param {*} itm
+     * @returns {*} structure Item
+     */
+    formatMsgCardItem(itm: any): any;
+    /**
+     * @description Structure the output items with an object format for MsgCard
+     * @param {*} itm
+     * @returns {*} structure Item
+     */
+    formatMsgCardItemObj(itm: any): any;
+    /**
+     * @description Structure the output with a card format
+     * @param {*} payload
+     * @returns {*} structure
+     */
+    formatMsgCard(payload: any): any;
 }

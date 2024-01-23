@@ -57,16 +57,31 @@ class MsTeams extends ksdp.integration.Dip {
         }
     }
 
+    /**
+     * @description Structure the output with a simple format
+     * @param {*} payload 
+     * @returns {*} structure
+     */
     formatSimple(payload) {
         return typeof (payload) === 'string' ? { text: payload } : payload;
     }
 
+    /**
+     * @description Structure the output items with a tuple format for MsgCard
+     * @param {*} itm 
+     * @returns {*} structure Item
+     */
     formatMsgCardItem(itm) {
         let name = itm?.name || "Datos";
         let value = kscryp.encode(itm?.value || itm, "json");
         return { name, value }
     }
 
+    /**
+     * @description Structure the output items with an object format for MsgCard
+     * @param {*} itm 
+     * @returns {*} structure Item
+     */
     formatMsgCardItemObj(itm) {
         let tmp = [];
         for (let i in itm) {
@@ -77,10 +92,14 @@ class MsTeams extends ksdp.integration.Dip {
         return tmp;
     }
 
+    /**
+     * @description Structure the output with a card format
+     * @param {*} payload 
+     * @returns {*} structure
+     */
     formatMsgCard(payload) {
         payload = payload || {};
         payload.facts = Array.isArray(payload.facts) ? payload.facts.map(itm => this.formatMsgCardItem(itm)) : this.formatMsgCardItemObj(payload?.facts);
-
         return {
             "@type": "MessageCard",
             "@context": "http://schema.org/extensions",
