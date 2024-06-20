@@ -13,32 +13,35 @@ export = Model;
  */
 declare class Model {
     /**
-     * @type {THook}
+     * @type {THook|null}
      */
-    hook: THook;
+    hook: THook | null;
     /**
-     * @type {Console}
+     * @type {Console|null}
      */
-    logger: Console;
+    logger: Console | null;
     /**
-     * @type {TList}
+     * @type {TList|null}
      */
-    models: TList;
+    models: TList | null;
     cfg: {
         model: {
             hook: {
                 name: string;
                 attr: {
                     id: string;
-                    notifier: string;
                     event: string;
-                    value: string;
-                    param: string;
                     owner: string;
                     group: string;
                     status: string;
+                    notifier: string;
+                    param: string;
+                    value: string;
                     processor: string;
                     expression: string;
+                    notifier_alt: string;
+                    param_alt: string;
+                    value_alt: string;
                 };
             };
             event: {
