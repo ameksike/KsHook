@@ -14,6 +14,7 @@ For further information, check the following topics:
 - [Notifiers](doc/notifier.md)
 - [Processors](doc/processor.md)
 - [Subscribers](doc/subscriber.md)
+- [Workflow](doc/workflow.md)
 - [Ksdp Hooks Model](https://github.com/ameksike/ksdp/blob/HEAD/doc/integration.hook.md)
 - [Create a preconfigured hook service in your project.](doc/create.service.md)
 - [Create a route/controller to handle hooks](doc/create.controllers.md)
@@ -60,13 +61,26 @@ const { models, driver, manager } = require('./db');
 
 Register subscribers for each event in the data model 
 ```
---------------------------------------------------------------------
-| id | event  | notifier | value    | processor | expression       |
---------------------------------------------------------------------
-| 1  | logout | locator  | newrelic | null      | null             |
-| 2  | login  | locator  | alert    | native    | failure EQUAL 11 |
---------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+| id | event  | notifier | value    |  param              | processor | expression       |
+------------------------------------------------------------------------------------------
+| 1  | logout | locator  | newrelic | null                | null      | null             |
+| 2  | login  | locator  | alert    | { failure: dto.inf} | native    | failure EQUAL 11 |
+------------------------------------------------------------------------------------------
 ```
+
+Extended model useful for workflows:
+
+```
+----------------------------------------------------------------------------------------------------------------------------------------
+| id | event  | notifier | value    |  param            | processor | expression       | notifier_alt | value_alt    |  param_alt      |
+----------------------------------------------------------------------------------------------------------------------------------------
+| 1  | logout | locator  | newrelic | null              | null      | null             | null         | null         | null            |
+| 2  | login  | locator  | alert    | {failure:dto.inf} | native    | failure EQUAL 11 | email        | test@srv.com | {note:dto.note} |
+----------------------------------------------------------------------------------------------------------------------------------------
+```
+
+For more details check the [workflow section.](./doc/workflow.md)
 
 Configure and run
 ```js
