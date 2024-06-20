@@ -15,36 +15,42 @@ const kscryp = require('kscryp');
  */
 class Model {
     /**
-     * @type {THook}
+     * @type {THook|null}
      */
     hook;
 
     /**
-     * @type {Console}
+     * @type {Console|null}
      */
     logger;
 
     /**
-     * @type {TList}
+     * @type {TList|null}
      */
     models;
 
     constructor() {
+        this.hook = null;
+        this.logger = null;
+        this.models = null;
         this.cfg = {
             model: {
                 hook: {
                     name: 'hooks',
                     attr: {
                         id: 'id',
-                        notifier: 'notifier',
                         event: 'event',
-                        value: 'value',
-                        param: 'param',
                         owner: 'owner',
                         group: 'group',
                         status: 'status',
+                        notifier: 'notifier',
+                        param: 'param',
+                        value: 'value',
                         processor: 'processor',
-                        expression: 'expression'
+                        expression: 'expression',
+                        notifier_alt: 'notifier_alt',
+                        param_alt: 'param_alt',
+                        value_alt: 'value_alt'
                     }
                 },
                 event: {
@@ -225,7 +231,7 @@ class Model {
                 data: payload
             });
         }
-    }
+    } 
 
     /**
      * @description get the event list
@@ -235,7 +241,7 @@ class Model {
     async events(payload) {
         try {
             const model = this.#getModel('event');
-            if (!model) {
+            if (!model) { 
                 return [];
             }
             const query = {};
@@ -262,12 +268,6 @@ class Model {
      * @returns {TEmission} formated payload
      */
     format(payload) {
-        if (payload?.target?.param) {
-            let processor = this.hook?.processor?.get('Native');
-            let info = {};
-            let data = processor?.run(payload.target.param, payload.data, info);
-            data && (payload.data = data);
-        }
         return payload;
     }
 }
