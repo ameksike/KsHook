@@ -37,7 +37,7 @@
   "dependencies": {
     "axios": "^1.7.2",
     "kscryp": "^1.0.18",
-    "ksdp": "^1.4.5",
+    "ksdp": "^1.4.6",
     "kseval": "^1.0.9"
   },
   "devDependencies": {
