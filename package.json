@@ -1,6 +1,6 @@
 {
   "name": "kshook",
-  "version": "1.0.17",
+  "version": "1.1.2",
   "description": "Ksike Hook library for easy implementation of Event Driven Design",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -35,9 +35,9 @@
   },
   "homepage": "https://github.com/ameksike/kshook#readme",
   "dependencies": {
-    "axios": "^1.6.5",
-    "kscryp": "^1.0.16",
-    "ksdp": "^1.2.16",
+    "axios": "^1.7.2",
+    "kscryp": "^1.0.18",
+    "ksdp": "^1.4.5",
     "kseval": "^1.0.9"
   },
   "devDependencies": {
