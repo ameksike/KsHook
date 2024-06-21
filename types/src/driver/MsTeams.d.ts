@@ -57,8 +57,25 @@ declare class MsTeams extends MsTeams_base {
     formatMsgCardItemObj(itm: any): any;
     /**
      * @description Structure the output with a card format
-     * @param {*} payload
+     * @param {Object} payload
+     * @param {Array<any>} [payload.facts]
+     * @param {String} [payload.themeColor]
+     * @param {String} [payload.summary]
+     * @param {String} [payload.sections]
+     * @param {String} [payload.title]
+     * @param {String} [payload.subtitle]
+     * @param {String} [payload.image]
+     * @param {String} [payload.text]
      * @returns {*} structure
      */
-    formatMsgCard(payload: any): any;
+    formatMsgCard(payload: {
+        facts?: Array<any>;
+        themeColor?: string;
+        summary?: string;
+        sections?: string;
+        title?: string;
+        subtitle?: string;
+        image?: string;
+        text?: string;
+    }): any;
 }

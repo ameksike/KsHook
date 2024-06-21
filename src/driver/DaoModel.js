@@ -1,4 +1,7 @@
 class DaoModel {
+    /**
+     * @param {*} data 
+     */
     constructor(data) {
         this.dataValue = null;
         if (!data) {
@@ -22,6 +25,11 @@ class DaoModel {
             }
         });
     }
+    /**
+     * @param {*} obj 
+     * @param {*} where 
+     * @returns 
+     */
     check(obj, where) {
         if (!where) return true;
         let res = true;
@@ -30,26 +38,75 @@ class DaoModel {
         }
         return Boolean(res);
     }
+    /**
+     * @param {*} id 
+     * @returns {*}
+     */
     findByPk(id) {
         return Promise.resolve(this.data.filter(itm => itm?.id === id)[0]);
     }
+    /**
+     * @param {*} param
+     * @returns {*}
+     */
     findOne({ where }) {
         return Promise.resolve(this.data.filter(itm => this.check(itm, where))[0]);
     }
+    /**
+     * @param {*} param
+     * @returns {*}
+     */
     findAll({ where }) {
         return Promise.resolve(where ? this.data.filter(itm => this.check(itm, where)) : this.data);
     }
-    findAndCountAll(options) { }
-    bulkCreate(data) { }
-    count(options) { }
-    update(data) { }
-    create(data) { 
+    /**
+     * @param {*} options
+     * @returns {*}
+     */
+    findAndCountAll(options) {
+        return [options];
+    }
+    /**
+     * @param {*} data
+     * @returns {*}
+     */
+    bulkCreate(data) {
+        return [data];
+    }
+
+    /**
+     * @param {*} options
+     * @returns {*}
+     */
+    count(options) {
+        return options;
+    }
+    /**
+     * @param {*} data 
+     */
+    update(data) {
+        return data;
+    }
+    /**
+     * @param {*} data 
+     */
+    create(data) {
         data.id = data.id || this.data.length;
         this.data.push(new DaoModel(data));
     }
-    destroy({ where }) { }
+    /**
+     * @param {*} data 
+     */
+    destroy({ where }) {
+        return where;
+    }
     getTableName() { return "" }
-    save(options) { }
+    /**
+     * @param {*} options 
+     */
+    save(options) {
+        return options;
+    }
     toJSON() { this.dataValue }
 }
 

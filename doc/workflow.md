@@ -16,27 +16,6 @@ KsHook is a library for Node.js that enables the implementation of an Event-Driv
 
 Consider the following model:
 
-
-markdown
-Copiar código
-# KsHook Library for Node.js
-
-## Overview
-
-KsHook is a library for Node.js that enables the implementation of an Event-Driven Architecture (EDA). It allows developers to create and manage event-driven workflows by defining subscribers, events, and notifiers. KsHook supports advanced features like conditional event handling, alternative notifiers, and parameter mapping, making it highly adaptable for complex workflows.
-
-## Key Concepts and Components
-
-1. **Subscriber**: An entity that listens for specific events and executes a handler when those events occur.
-2. **Event**: An occurrence or action that triggers subscribers.
-3. **Notifier**: A service or component responsible for notifying subscribers about an event.
-4. **Processor**: A handler that evaluates expressions to determine whether certain conditions are met.
-5. **Expression**: A logical condition that can trigger alternative actions if not met.
-
-## Example Model
-
-Consider the following model:
-
 ```
 ----------------------------------------------------------------------------------------------------------------------------------------
 | id | event  | notifier | value    |  param            | processor | expression       | notifier_alt | value_alt    |  param_alt      |
