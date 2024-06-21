@@ -101,12 +101,16 @@ class Model {
 
     /**
      * @description format query
-     * @param {TSubscription|TEvent|TList} payload
+     * @param {TSubscription|TEvent|TList} options
      * @param {EnumModelName} [name=hook]
      * @returns {TList} 
      */
-    #getQuery(payload, name = 'hook') {
+    #getQuery(options, name = 'hook') {
+        /** @type {any} */
+        let payload = options;
+        /** @type {any} */
         let where = {};
+        /** @type {any} */
         let meta = this.cfg?.model[name]?.attr || {};
         for (let i in payload) {
             if (payload[i] !== undefined && meta[i] !== undefined) {
@@ -127,7 +131,9 @@ class Model {
      * @returns {TSubscription|Event} row
      */
     #getRow(item, name = 'hook') {
+        /** @type {any} */
         let row = { event: null };
+        /** @type {any} */
         let met = this.cfg?.model[name]?.attr || {};
         for (let i in met) {
             item[met[i]] !== undefined && (row[i] = item[met[i]]);
@@ -139,7 +145,7 @@ class Model {
     /**
      * @description save subscriptions
      * @param {TSubscription|Array<TSubscription>} payload
-     * @returns {Promise<TSubscription[]>} succeed subscriptions
+     * @returns {Promise<TSubscription[]|null>} succeed subscriptions
      */
     async subscribe(payload) {
         try {
@@ -151,26 +157,29 @@ class Model {
                 let data = payload.map(item => this.#getRow(item));
                 return model.bulkCreate(data);
             } else {
-                let data = this.#getRow(payload);
+                /** @type {any} */
+                let param = payload
+                let data = this.#getRow(param);
                 let where = this.#getQuery(payload);
                 let row = await model.findOne({ where });
                 return [await (row ? row.update(data) : model.create(data))];
             }
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 flow: (Array.isArray(payload) ? payload[0]?.flow : payload?.flow) || String(Date.now()) + '00',
                 src: 'KsHook:Subscriber:Model:subscribe',
                 error: error?.message || error,
                 data: payload
             });
+            return null;
         }
     }
 
     /**
      * @description remove subscriptions
      * @param {TSubscription} payload
-     * @returns {Promise<TSubscription>} succeed unsubscriptions
+     * @returns {Promise<TSubscription|null>} succeed unsubscriptions
      */
     async remove(payload) {
         try {
@@ -181,20 +190,21 @@ class Model {
             let where = this.#getQuery(payload);
             return await model.destroy({ where });
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 flow: payload?.flow || String(Date.now()) + '00',
                 src: 'KsHook:Subscriber:Model:unsubscribe',
                 error: error?.message || error,
                 data: payload
             });
+            return null;
         }
     }
 
     /**
      * @description remove subscriptions
      * @param {TSubscription|Array<TSubscription>} payload
-     * @returns {Promise<TSubscription[]>} succeed unsubscriptions
+     * @returns {Promise<Array<TSubscription|null>>} succeed unsubscriptions
      */
     async unsubscribe(payload) {
         if (Array.isArray(payload)) {
@@ -211,7 +221,7 @@ class Model {
     /**
      * @description get the subscriptions list
      * @param {TList} payload 
-     * @returns {Promise<TSubscription[]>}
+     * @returns {Promise<TSubscription[]|null>}
      */
     async subscriptions(payload) {
         try {
@@ -223,25 +233,26 @@ class Model {
             const res = await model.findAll({ where });
             return (res?.map && res.map(item => this.#getRow(item))) || [];
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 flow: payload?.flow || String(Date.now()) + '00',
                 src: 'KsHook:Subscriber:Model:subscriptions',
                 error: error?.message || error,
                 data: payload
             });
+            return null;
         }
-    } 
+    }
 
     /**
      * @description get the event list
      * @param {TList} payload 
-     * @returns {Promise<Event[]>}
+     * @returns {Promise<Event[]|null>}
      */
     async events(payload) {
         try {
             const model = this.#getModel('event');
-            if (!model) { 
+            if (!model) {
                 return [];
             }
             const query = {};
@@ -250,15 +261,16 @@ class Model {
             attrs?.event && (query.group = [attrs.event]);
             where && (query.where = where);
             const res = await model.findAll(query);
-            return res?.map(item => this.#getRow(item, 'event'));
+            return res?.map(item => this.#getRow(item, 'event')) || null;
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 flow: payload?.flow || String(Date.now()) + '00',
                 src: 'KsHook:Subscriber:Model:events',
                 error: error?.message || error,
                 data: payload
             });
+            return null;
         }
     }
 

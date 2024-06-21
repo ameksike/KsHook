@@ -85,15 +85,15 @@ declare class Model {
     /**
      * @description save subscriptions
      * @param {TSubscription|Array<TSubscription>} payload
-     * @returns {Promise<TSubscription[]>} succeed subscriptions
+     * @returns {Promise<TSubscription[]|null>} succeed subscriptions
      */
-    subscribe(payload: TSubscription | Array<TSubscription>): Promise<TSubscription[]>;
+    subscribe(payload: TSubscription | Array<TSubscription>): Promise<TSubscription[] | null>;
     /**
      * @description remove subscriptions
      * @param {TSubscription} payload
-     * @returns {Promise<TSubscription>} succeed unsubscriptions
+     * @returns {Promise<TSubscription|null>} succeed unsubscriptions
      */
-    remove(payload: TSubscription): Promise<TSubscription>;
+    remove(payload: TSubscription): Promise<TSubscription | null>;
     /**
      * @description remove subscriptions
      * @param {TSubscription|Array<TSubscription>} payload
@@ -103,15 +103,15 @@ declare class Model {
     /**
      * @description get the subscriptions list
      * @param {TList} payload
-     * @returns {Promise<TSubscription[]>}
+     * @returns {Promise<TSubscription[]|null>}
      */
-    subscriptions(payload: TList): Promise<TSubscription[]>;
+    subscriptions(payload: TList): Promise<TSubscription[] | null>;
     /**
      * @description get the event list
      * @param {TList} payload
-     * @returns {Promise<Event[]>}
+     * @returns {Promise<Event[]|null>}
      */
-    events(payload: TList): Promise<Event[]>;
+    events(payload: TList): Promise<Event[] | null>;
     /**
      * @description preformat subscriptions payload before precess the event
      * @param {TEmission} payload
@@ -123,11 +123,11 @@ declare class Model {
 declare namespace Model {
     export { TList, THook, TEvent, TEmission, TMetaHook, TMetaEvent, TSubscription, EnumModelName };
 }
-type THook = import('../types').THook;
-type TList = import('../types').TList;
-type TEvent = import('../types').TEvent;
-type TEmission = import('../types').TEmission;
-type TMetaHook = import('../types').TMetaHook;
-type TMetaEvent = import('../types').TMetaEvent;
-type TSubscription = import('../types').TSubscription;
-type EnumModelName = 'hook' | 'event';
+type TList = import("../types").TList;
+type THook = import("../types").THook;
+type TEvent = import("../types").TEvent;
+type TEmission = import("../types").TEmission;
+type TMetaHook = import("../types").TMetaHook;
+type TMetaEvent = import("../types").TMetaEvent;
+type TSubscription = import("../types").TSubscription;
+type EnumModelName = "hook" | "event";
