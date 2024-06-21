@@ -52,11 +52,11 @@ export type TMetaEvent = {
     attr: TEvent;
 };
 export type THook = import("ksdp/types/src/integration/hook");
-export type IHook = typeof import('ksdp').integration.hook.Main;
+export type IHook = typeof import("ksdp").integration.hook.Main;
 /**
  * Represents an HTTP client request.
  */
-export type TClientRequest = import('http').ClientRequest;
+export type TClientRequest = import("http").ClientRequest;
 export type TReqWeb = {
     url?: string;
     method?: string;
@@ -96,10 +96,10 @@ export type TDtaMsTeams = {
     format?: string;
     facts?: any;
 };
-export type TTokenType = 'Bearer' | 'Basic';
-export type TContType = 'application/json' | 'application/xml' | 'text/html' | 'text/javascript' | 'application/gzip' | 'multipart/form-data' | 'application/x-www-form-urlencoded';
-export type TResType = 'arraybuffer' | 'document' | 'json' | 'text' | 'stream' | 'blob';
-export type THttpAction = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head' | 'trace' | 'connect';
+export type TTokenType = "Bearer" | "Basic";
+export type TContType = "application/json" | "application/xml" | "text/html" | "text/javascript" | "application/gzip" | "multipart/form-data" | "application/x-www-form-urlencoded";
+export type TResType = "arraybuffer" | "document" | "json" | "text" | "stream" | "blob";
+export type THttpAction = "get" | "post" | "put" | "delete" | "patch" | "options" | "head" | "trace" | "connect";
 export type TTransformRequest = (data: any, headers?: TList) => any;
 export type TTransformResponse = (data: any) => any;
 export type TParamsSerializer = (params: TList) => string;

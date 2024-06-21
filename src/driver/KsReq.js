@@ -69,7 +69,7 @@ class KsReq {
                 opts.method = payload.method;
                 opts.body = kscryp.encode(payload.data, 'json');
             }
-
+            /** @type {any} */
             const drv = this.handler();
             const response = await drv.req(payload.url, opts);
             const data = drv.type === 'fetch' ? await response.json() : response.data;

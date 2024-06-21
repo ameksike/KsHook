@@ -43,7 +43,7 @@ class Telegram extends ksdp.integration.Dip {
             const res = await axios.post(url, bdy);
             return res.data;
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 src: "KsHook:Driver:Telegram:send",
                 error: error?.response?.data?.description || error?.message,
@@ -69,7 +69,7 @@ class Telegram extends ksdp.integration.Dip {
             const res = await axios.get(url);
             return res.data;
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 src: "KsHook:Driver:Telegram:info",
                 error: error?.response?.data?.description || error?.message,
@@ -95,7 +95,7 @@ class Telegram extends ksdp.integration.Dip {
             const res = await axios.get(url);
             return res.data;
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 src: "KsHook:Driver:Telegram:updates",
                 error: error?.response?.data?.description || error?.message,
@@ -126,7 +126,7 @@ class Telegram extends ksdp.integration.Dip {
             const res = await axios.get(url, bdy);
             return res.data;
         }
-        catch (error) {
+        catch (/** @type {*} */ error) {
             this.logger?.error({
                 src: "KsHook:Driver:Telegram:setHook",
                 error: error?.response?.data?.description || error?.message,

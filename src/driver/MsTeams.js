@@ -46,7 +46,7 @@ class MsTeams extends ksdp.integration.Dip {
             await axios({ url, method: 'post', data: payload.result });
             return true;
         }
-        catch (error) {
+        catch (/** @type {any} */ error) {
             this.logger?.error({
                 flow: opt?.flow || payload?.flow,
                 src: "KsHook:Connector:MsTeams:send",
@@ -99,7 +99,9 @@ class MsTeams extends ksdp.integration.Dip {
      */
     formatMsgCard(payload) {
         payload = payload || {};
-        payload.facts = Array.isArray(payload.facts) ? payload.facts.map(itm => this.formatMsgCardItem(itm)) : this.formatMsgCardItemObj(payload?.facts);
+        payload.facts = Array.isArray(payload.facts) ?
+            payload.facts.map(itm => this.formatMsgCardItem(itm)) :
+            this.formatMsgCardItemObj(payload?.facts);
         return {
             "@type": "MessageCard",
             "@context": "http://schema.org/extensions",
