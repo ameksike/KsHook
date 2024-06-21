@@ -94,7 +94,15 @@ class MsTeams extends ksdp.integration.Dip {
 
     /**
      * @description Structure the output with a card format
-     * @param {*} payload 
+     * @param {Object} payload 
+     * @param {Array<any>} [payload.facts] 
+     * @param {String} [payload.themeColor] 
+     * @param {String} [payload.summary] 
+     * @param {String} [payload.sections] 
+     * @param {String} [payload.title] 
+     * @param {String} [payload.subtitle] 
+     * @param {String} [payload.image] 
+     * @param {String} [payload.text] 
      * @returns {*} structure
      */
     formatMsgCard(payload) {

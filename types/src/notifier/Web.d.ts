@@ -35,7 +35,7 @@ declare class Web {
 declare namespace Web {
     export { TClientRequest, TReqWeb, TResWeb, TDtaWeb };
 }
-type TClientRequest = import('../types').TClientRequest;
-type TReqWeb = import('../types').TReqWeb;
-type TResWeb = import('../types').TResWeb;
-type TDtaWeb = import('../types').TDtaWeb;
+type TClientRequest = import("../types").TClientRequest;
+type TReqWeb = import("../types").TReqWeb;
+type TResWeb = import("../types").TResWeb;
+type TDtaWeb = import("../types").TDtaWeb;

@@ -30,7 +30,7 @@ declare class KsEvent {
 declare namespace KsEvent {
     export { THook, TReqEvent, TResEvent, TDtaEvent };
 }
-type THook = import('../types').THook;
-type TReqEvent = import('../types').TReqEvent;
-type TResEvent = import('../types').TResEvent;
-type TDtaEvent = import('../types').TDtaEvent;
+type THook = import("../types").THook;
+type TReqEvent = import("../types").TReqEvent;
+type TResEvent = import("../types").TResEvent;
+type TDtaEvent = import("../types").TDtaEvent;

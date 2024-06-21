@@ -33,6 +33,6 @@ declare namespace MsTeams {
     export { TReqMsTeams, TResMsTeams, TDtaMsTeams };
 }
 import MsTeamsDriver = require("../driver/MsTeams");
-type TReqMsTeams = import('../types').TReqMsTeams;
-type TResMsTeams = import('../types').TResMsTeams;
-type TDtaMsTeams = import('../types').TDtaMsTeams;
+type TReqMsTeams = import("../types").TReqMsTeams;
+type TResMsTeams = import("../types").TResMsTeams;
+type TDtaMsTeams = import("../types").TDtaMsTeams;

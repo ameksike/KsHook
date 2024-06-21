@@ -34,7 +34,7 @@ declare namespace Telegram {
     export { TClientRequest, TReqTelegram, TResTelegram, TDtaTelegram };
 }
 import TelegramDriver = require("../driver/Telegram");
-type TClientRequest = import('../types').TClientRequest;
-type TReqTelegram = import('../types').TReqTelegram;
-type TResTelegram = import('../types').TResTelegram;
-type TDtaTelegram = import('../types').TDtaTelegram;
+type TClientRequest = import("../types").TClientRequest;
+type TReqTelegram = import("../types").TReqTelegram;
+type TResTelegram = import("../types").TResTelegram;
+type TDtaTelegram = import("../types").TDtaTelegram;

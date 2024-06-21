@@ -154,7 +154,9 @@ class Model {
                 return null;
             }
             if (Array.isArray(payload)) {
-                let data = payload.map(item => this.#getRow(item));
+                /** @type {Array<any>} */
+                let param = payload
+                let data = param.map(item => this.#getRow(item));
                 return model.bulkCreate(data);
             } else {
                 /** @type {any} */
@@ -221,7 +223,7 @@ class Model {
     /**
      * @description get the subscriptions list
      * @param {TList} payload 
-     * @returns {Promise<TSubscription[]|null>}
+     * @returns {Promise<Array<TSubscription|Event>|null>}
      */
     async subscriptions(payload) {
         try {
@@ -230,6 +232,7 @@ class Model {
                 return [];
             }
             const where = this.#getQuery(payload, 'hook');
+            /** @type {Array<any>} */
             const res = await model.findAll({ where });
             return (res?.map && res.map(item => this.#getRow(item))) || [];
         }
@@ -247,7 +250,7 @@ class Model {
     /**
      * @description get the event list
      * @param {TList} payload 
-     * @returns {Promise<Event[]|null>}
+     * @returns {Promise<Array<Event|TSubscription>|null>}
      */
     async events(payload) {
         try {
@@ -260,6 +263,7 @@ class Model {
             const where = this.#getQuery(payload, 'event');
             attrs?.event && (query.group = [attrs.event]);
             where && (query.where = where);
+            /** @type {Array<any>} */
             const res = await model.findAll(query);
             return res?.map(item => this.#getRow(item, 'event')) || null;
         }

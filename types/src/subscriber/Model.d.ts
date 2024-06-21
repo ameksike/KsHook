@@ -97,21 +97,21 @@ declare class Model {
     /**
      * @description remove subscriptions
      * @param {TSubscription|Array<TSubscription>} payload
-     * @returns {Promise<TSubscription[]>} succeed unsubscriptions
+     * @returns {Promise<Array<TSubscription|null>>} succeed unsubscriptions
      */
-    unsubscribe(payload: TSubscription | Array<TSubscription>): Promise<TSubscription[]>;
+    unsubscribe(payload: TSubscription | Array<TSubscription>): Promise<Array<TSubscription | null>>;
     /**
      * @description get the subscriptions list
      * @param {TList} payload
-     * @returns {Promise<TSubscription[]|null>}
+     * @returns {Promise<Array<TSubscription|Event>|null>}
      */
-    subscriptions(payload: TList): Promise<TSubscription[] | null>;
+    subscriptions(payload: TList): Promise<Array<TSubscription | Event> | null>;
     /**
      * @description get the event list
      * @param {TList} payload
-     * @returns {Promise<Event[]|null>}
+     * @returns {Promise<Array<Event|TSubscription>|null>}
      */
-    events(payload: TList): Promise<Event[] | null>;
+    events(payload: TList): Promise<Array<Event | TSubscription> | null>;
     /**
      * @description preformat subscriptions payload before precess the event
      * @param {TEmission} payload
